@@ -1,0 +1,14 @@
+.footer {
+  .banner {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    opacity: 0.5;
+    text-align: right;
+
+    .banner-text {
+      font-size: 1rem;
+    }
+  }
+}

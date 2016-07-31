@@ -1,10 +1,11 @@
 import React from 'react';
 
-export default React.createClass({
-	displayName: 'Footer',
-	render() {
-		return (
-			<h1>Footer</h1>
-		);
-	}
-});
+export default function() {
+	return (
+		<div className="footer">
+			<div className="panel-footer banner">
+				<p className="banner-text">Reactive Programming Web app, 2016</p>
+			</div>
+		</div>
+	);
+}

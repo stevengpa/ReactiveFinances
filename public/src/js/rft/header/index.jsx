@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navbar, Nav, NavItem, Button} from 'react-bootstrap';
+import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 
 export default function(props) {
@@ -8,17 +8,24 @@ export default function(props) {
 			<Navbar>
 				<Navbar.Header>
 					<Navbar.Brand>
-						<LinkContainer to="/">
-							<a href="#" active={false}>Reactive Finance Tracking</a>
+						<LinkContainer to="/" className="btn-link header-brandname">
+							<Button><span className="label-reactive">Reactive</span> Finance Tracking</Button>
 						</LinkContainer>
 					</Navbar.Brand>
 					<Navbar.Toggle />
 				</Navbar.Header>
 				<Navbar.Collapse>
+
 					<Nav pullRight>
-						<NavItem eventKey={1} href="#">Link Right</NavItem>
-						<NavItem eventKey={2} href="#">Link Right</NavItem>
+						<LinkContainer to="/login" className="btn-link header-brandname">
+							<NavItem><Glyphicon glyph="user" />&nbsp;&nbsp;Log In</NavItem>
+						</LinkContainer>
+
+						<LinkContainer to="/settings" className="btn-link header-brandname">
+							<NavItem><Glyphicon glyph="cog" />&nbsp;&nbsp;Settings</NavItem>
+						</LinkContainer>
 					</Nav>
+
 				</Navbar.Collapse>
 			</Navbar>
 		</div>
