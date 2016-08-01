@@ -10,5 +10,25 @@
     .label-reactive {
       color: $color-emerald;
     }
+
+    &:hover {
+      .label-reactive {
+        color: $color-white;
+      }
+
+      .label-finance-tracking {
+        color: $color-emerald;
+      }
+    }
+
+    &:focus {
+      .label-reactive {
+        color: $color-emerald;
+      }
+
+      .label-finance-tracking {
+        color: $color-white;
+      }
+    }
   }
 }

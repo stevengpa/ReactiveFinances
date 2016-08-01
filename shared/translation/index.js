@@ -1,28 +1,24 @@
 const _ = require('lodash');
+const mobx = require('mobx');
+const {observable, action} = mobx;
+
 const config = require('./config');
-const keyLang = 'rft_lang';
+const KEY_LANG = 'rft_lang';
 
-function init() {
-	if (_.isNull(localStorage.getItem(keyLang))) {
-		localStorage.setItem(keyLang, 'es');
-	}
-
-	return localStorage.getItem(keyLang);
-}
-
-function changeLang(lang, $component) {
-	localStorage.setItem(keyLang, lang);
-	$component.forceUpdate();
-	return localStorage.getItem(keyLang);
-}
-
-function t(path) {
-	init();
-	var lang = localStorage.getItem(keyLang) || 'es';
-	return _.get(config, lang.toLowerCase() + '.' + path, '');
-}
-
-module.exports = {
-	t,
-	changeLang
-};
+export default observable({
+	language: 'es',
+	init: action(function() {
+		if (_.isNull(localStorage.getItem(KEY_LANG))) {
+			localStorage.setItem(KEY_LANG, this.language);
+		} else {
+			this.setLanguage(localStorage.getItem(KEY_LANG));
+		}
+	}),
+	t(path) {
+		return _.get(config, this.language + '.' + path, '');
+	},
+	setLanguage: action(function(lang) {
+		localStorage.setItem(KEY_LANG, lang);
+		this.language = lang;
+	})
+});

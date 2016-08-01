@@ -7,6 +7,7 @@ import App from './rft/app';
 import Login from './rft/login';
 import Invalid from './rft/invalid';
 import Dashboard from './rft/dashboard';
+import SignUp from './rft/signup';
 
 import store from './store';
 
@@ -16,6 +17,7 @@ render(
 			<Route path="/" component={App}>,
 				<IndexRoute component={Dashboard}/>
 				<Route path="/login" component={Login}/>
+				<Route path="/signup" component={SignUp}/>
 			</Route>
 			<Route path="*" component={Invalid} />
 		</Router>

@@ -8,7 +8,7 @@ import {isEmail} from 'validator';
 const CODE_LEN = 10;
 
 export default observer(['store'], React.createClass({
-	displayName: 'Login',
+	displayName: 'SignUp',
 	getInitialState() {
 		return {
 			email: '',
@@ -58,7 +58,7 @@ export default observer(['store'], React.createClass({
 
 				<Row className="align-center">
 					<Col md={12}>
-						<h1>{this.translation.t('login.title')}</h1>
+						<h1>{this.translation.t('signup.title')}</h1>
 						<hr/>
 					</Col>
 				</Row>
@@ -71,26 +71,12 @@ export default observer(['store'], React.createClass({
 								controlId="formBasicText"
 								validationState={this.validateEmail()}
 							>
-								<ControlLabel>{this.translation.t('login.email')}</ControlLabel>
+								<ControlLabel>{this.translation.t('signup.email')}</ControlLabel>
 								<FormControl
 									type="text"
 									value={this.state.email}
-									placeholder={this.translation.t('login.email_place')}
+									placeholder={this.translation.t('signup.email_place')}
 									onChange={this.emailChange}
-								/>
-								<FormControl.Feedback />
-							</FormGroup>
-
-							<FormGroup
-								controlId="formBasicText"
-								validationState={this.validateCode()}
-							>
-								<ControlLabel>{this.translation.t('login.code')}</ControlLabel>
-								<FormControl
-									type="text"
-									value={this.state.code}
-									placeholder={this.translation.t('login.code_place')}
-									onChange={this.codeChange}
 								/>
 								<FormControl.Feedback />
 							</FormGroup>
@@ -105,20 +91,10 @@ export default observer(['store'], React.createClass({
 						<Button
 							block={true}
 							bsStyle="success"
-						  disabled={this.login.isFormOK}
+							disabled={this.login.isFormOK}
 						>
-								{this.translation.t('login.login')}
+							{this.translation.t('signup.signup')}
 						</Button>
-					</Col>
-					<Col md={4} xs={2} sm={2}/>
-				</Row>
-
-				<Row>
-					<Col md={4} xs={2} sm={2}/>
-					<Col md={4} xs={8} sm={8}>
-						<LinkContainer to="/signup">
-							<Button block={true} bsStyle="link">{this.translation.t('login.signup')}</Button>
-						</LinkContainer>
 					</Col>
 					<Col md={4} xs={2} sm={2}/>
 				</Row>
