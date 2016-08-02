@@ -43,7 +43,7 @@ gulp.task('compile-front', () => {
 });
 
 gulp.task('watch-front', () => {
-	gulp.watch(['./public/src/js/**/*.js', './public/src/js/**/*.jsx'], ['compile-front']);
+	gulp.watch(['./public/src/js/**/*.{js,jsx}'], ['compile-front']);
 });
 
 // SASS -> CSS

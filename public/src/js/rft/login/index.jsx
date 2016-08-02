@@ -5,52 +5,19 @@ import {Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button} from 'reac
 import {LinkContainer} from 'react-router-bootstrap';
 import {isEmail} from 'validator';
 
-const CODE_LEN = 10;
+
 
 export default observer(['store'], React.createClass({
 	displayName: 'Login',
-	getInitialState() {
-		return {
-			email: '',
-			code: ''
-		};
-	},
 	componentWillMount() {
 		this.login = this.props.store.login;
 		this.translation = this.props.store.translation;
 	},
 	emailChange(e) {
-		this.setState({ email: e.target.value });
+		this.login.setEmail(e.target.value);
 	},
 	codeChange(e) {
-		this.setState({ code: e.target.value });
-	},
-	validateEmail() {
-		const {email} = this.state;
-		if (isEmail(email) && _.size(email) > 0) {
-			this.login.setIsEmailOK(true);
-			return 'success';
-
-		} else if (!isEmail(email) && _.size(email) > 0) {
-			this.login.setIsEmailOK(false);
-			return 'error';
-		}
-	},
-	validateCode() {
-		const {code} = this.state;
-		const codeLen = _.size(code);
-
-		if (codeLen === CODE_LEN) {
-			this.login.setIsCodeOK(true);
-			return 'success';
-
-		} else if (codeLen < CODE_LEN && code !== '') {
-			this.login.setIsCodeOK(false);
-			return 'error';
-		}
-	},
-	getFormState() {
-		return false;
+		this.login.setCode(e.target.value);
 	},
 	render() {
 		return (
@@ -69,28 +36,28 @@ export default observer(['store'], React.createClass({
 						<form>
 							<FormGroup
 								controlId="formBasicText"
-								validationState={this.validateEmail()}
+								validationState={this.login.formEmailState}
 							>
 								<ControlLabel>{this.translation.t('login.email')}</ControlLabel>
 								<FormControl
 									type="text"
-									value={this.state.email}
+									value={this.login.email}
 									placeholder={this.translation.t('login.email_place')}
-									onChange={this.emailChange}
+									onChange={(e) => this.login.setEmail(e.target.value)}
 								/>
 								<FormControl.Feedback />
 							</FormGroup>
 
 							<FormGroup
 								controlId="formBasicText"
-								validationState={this.validateCode()}
+								validationState={this.login.formCodeState}
 							>
 								<ControlLabel>{this.translation.t('login.code')}</ControlLabel>
 								<FormControl
 									type="text"
-									value={this.state.code}
+									value={this.login.code}
 									placeholder={this.translation.t('login.code_place')}
-									onChange={this.codeChange}
+									onChange={(e) => this.login.setCode(e.target.value)}
 								/>
 								<FormControl.Feedback />
 							</FormGroup>
@@ -105,7 +72,7 @@ export default observer(['store'], React.createClass({
 						<Button
 							block={true}
 							bsStyle="success"
-						  disabled={this.login.isFormOK}
+							disabled={this.login.disabled}
 						>
 								{this.translation.t('login.login')}
 						</Button>
