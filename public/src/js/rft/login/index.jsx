@@ -1,11 +1,7 @@
 import React from 'react';
-import _ from 'lodash';
 import {observer} from 'mobx-react';
-import {Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
+import {Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button, Alert} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
-import {isEmail} from 'validator';
-
-
 
 export default observer(['store'], React.createClass({
 	displayName: 'Login',
@@ -62,6 +58,16 @@ export default observer(['store'], React.createClass({
 								<FormControl.Feedback />
 							</FormGroup>
 						</form>
+					</Col>
+					<Col md={4} xs={2} sm={2}/>
+				</Row>
+
+				<Row>
+					<Col md={4} xs={2} sm={2}/>
+					<Col md={4} xs={8} sm={8}>
+						<Alert bsStyle={this.login.messageType} className={this.login.messageClass}>
+							<span>{this.login.message}</span>
+						</Alert>
 					</Col>
 					<Col md={4} xs={2} sm={2}/>
 				</Row>

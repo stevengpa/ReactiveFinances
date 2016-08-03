@@ -39,14 +39,17 @@ export default observable({
 					language: translation.language
 				}
 			}).then(({data}) => {
-				console.log('=========  result front  =========');
-				console.log(data);
-				console.log('=====  End of result front>  =====');
+				if (_.get(data, 'emailConfirmation', false)) {
+					this.messageType = 'success';
+					this.message = translation.t('signup.success');
+				} else {
+					this.messageType = 'danger';
+					this.message = translation.t('signup.error');
+				}
 			})
 			.catch((err) => {
-				console.log('=========  err front  =========');
-				console.log(err);
-				console.log('=====  End of err front>  =====');
+				this.messageType = 'danger';
+				this.message = translation.t('signup.error');
 			});
 		}
 	})

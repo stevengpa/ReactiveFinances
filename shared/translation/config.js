@@ -18,7 +18,9 @@ module.exports = {
 			title: "Crear cuenta",
 			email: "Correo electrónico",
 			email_place: "John@gmail.com",
-			signup: "Crear"
+			signup: "Crear",
+			error: "Se produjo un error ó el correo ya se encuentra regitrado. :( ",
+			success: "El código de acceso ha sido enviado a tu correo ! :) "
 		},
 		email_code: {
 			title: 'Bienvenido a Reactive Finance Tracking !!!',
@@ -47,7 +49,9 @@ module.exports = {
 			title: "Sign Up",
 			email: "Email",
 			email_place: "John@gmail.com",
-			signup: "Sign Up"
+			signup: "Sign Up",
+			error: "An error occurred or the email was already registred. :( ",
+			success: "Your access code was sent to your email ! :) "
 		},
 		email_code: {
 			title: 'Welcome to Reactive Finance Tracking !!!',

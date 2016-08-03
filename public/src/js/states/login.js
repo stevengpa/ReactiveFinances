@@ -2,13 +2,18 @@ import _ from 'lodash';
 import {observable, action} from 'mobx';
 import {isEmail} from 'validator';
 
-const CODE_LEN = 10;
+const CODE_LEN = 36;
 
 export default observable({
 	// Observables:
 	email: '',
 	code: '',
+	message: '',
+	messageType: 'warning',
 	// Computeds:
+	messageClass() {
+		return (_.size(this.message) === 0) ? 'hide-element' : '';
+	},
 	disabled() {
 		return !(this.isEmailOK && this.isCodeOK);
 	},
