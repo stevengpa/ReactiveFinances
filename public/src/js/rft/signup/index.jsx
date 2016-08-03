@@ -1,6 +1,6 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
+import {Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button, Alert} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 
 export default observer(['store'], React.createClass({
@@ -45,10 +45,21 @@ export default observer(['store'], React.createClass({
 				<Row>
 					<Col md={4} xs={2} sm={2}/>
 					<Col md={4} xs={8} sm={8}>
+						<Alert bsStyle={this.signup.messageType} className={this.signup.messageClass}>
+							<span>{this.signup.message}</span>
+						</Alert>
+					</Col>
+					<Col md={4} xs={2} sm={2}/>
+				</Row>
+
+				<Row>
+					<Col md={4} xs={2} sm={2}/>
+					<Col md={4} xs={8} sm={8}>
 						<Button
 							block={true}
 							bsStyle="success"
 							disabled={this.signup.disabled}
+							onClick={() => this.signup.register()}
 						>
 							{this.translation.t('signup.signup')}
 						</Button>
@@ -60,7 +71,12 @@ export default observer(['store'], React.createClass({
 					<Col md={4} xs={2} sm={2}/>
 					<Col md={4} xs={8} sm={8}>
 						<LinkContainer to="/login">
-							<Button block={true} bsStyle="link">{this.translation.t('login.login')}</Button>
+							<Button
+								block={true}
+								bsStyle="link"
+							>
+								{this.translation.t('login.login')}
+							</Button>
 						</LinkContainer>
 					</Col>
 					<Col md={4} xs={2} sm={2}/>

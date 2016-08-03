@@ -24,6 +24,9 @@ app.get('*', (req, res) => {
 	res.render('index');
 });
 
+const signupRouter = require('./private/router/signup');
+app.use('/', signupRouter);
+
 const httpServer = http.createServer(app);
 httpServer.listen(4001, () => {
 	console.log('Running server in port 4001');

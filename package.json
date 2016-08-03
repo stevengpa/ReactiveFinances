@@ -9,6 +9,7 @@
   "author": "Steven Pérez Alfaro",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.13.1",
     "body-parser": "^1.15.2",
     "config": "^1.21.0",
     "cors": "^2.7.1",

@@ -5,8 +5,17 @@ const {observable, action} = mobx;
 const config = require('./config');
 const KEY_LANG = 'rft_lang';
 
-export default observable({
+module.exports = observable({
+	// Observables:
 	language: 'es',
+	// Computeds:
+	t(path) {
+		return _.get(config, this.language + '.' + path, '');
+	},
+	get() {
+		return (_.isNull(localStorage.getItem(KEY_LANG))) ? 'es' : localStorage.getItem(KEY_LANG);
+	},
+	// Actions:
 	init: action(function() {
 		if (_.isNull(localStorage.getItem(KEY_LANG))) {
 			localStorage.setItem(KEY_LANG, this.language);
@@ -14,11 +23,11 @@ export default observable({
 			this.setLanguage(localStorage.getItem(KEY_LANG));
 		}
 	}),
-	t(path) {
-		return _.get(config, this.language + '.' + path, '');
-	},
 	setLanguage: action(function(lang) {
 		localStorage.setItem(KEY_LANG, lang);
+		this.language = lang;
+	}),
+	set: action(function(lang) {
 		this.language = lang;
 	})
 });

@@ -19,6 +19,13 @@ module.exports = {
 			email: "Correo electrónico",
 			email_place: "John@gmail.com",
 			signup: "Crear"
+		},
+		email_code: {
+			title: 'Bienvenido a Reactive Finance Tracking !!!',
+			subject: 'RFT [Credenciales]',
+			credential: 'Tu credenciales son:',
+			user: 'Usuario: ',
+			code: 'Código: '
 		}
 	},
 	en: {
@@ -41,6 +48,13 @@ module.exports = {
 			email: "Email",
 			email_place: "John@gmail.com",
 			signup: "Sign Up"
+		},
+		email_code: {
+			title: 'Welcome to Reactive Finance Tracking !!!',
+			subject: 'RFT [Credentials]',
+			credential: 'Your credentials are: ',
+			user: 'User: ',
+			code: 'Code: '
 		}
 	}
 };
