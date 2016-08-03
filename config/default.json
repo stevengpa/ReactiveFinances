@@ -3,10 +3,10 @@
     "email": {
       "service": "Gmail",
       "host": "smtp.gmail.com",
-      "port": 587,
+      "port": "587",
       "auth": {
-        "user": "",
-        "pass": ""
+        "user": "user",
+        "pass": "pwd"
       }
     }
   }

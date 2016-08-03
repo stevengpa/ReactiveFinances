@@ -2,4 +2,7 @@
 node_modules
 public/dist
 config/local.json
-data/rtf.json
+db
+.DS_Store
+*~
+
