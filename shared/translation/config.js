@@ -12,6 +12,7 @@ module.exports = {
 			code: "Código",
 			code_place: "Ingresa el código",
 			login: "Ingresar",
+			error: "Se produjo un error ó tus credenciales son incorrectas. :( ",
 			signup: "Crear cuenta"
 		},
 		signup: {
@@ -43,7 +44,8 @@ module.exports = {
 			code: "Code",
 			code_place: "Enter your code",
 			login: "Log In",
-			signup: "Sign Up"
+			signup: "Sign Up",
+			error: "An error occurred or your credentials are incorrect. :( ",
 		},
 		signup: {
 			title: "Sign Up",

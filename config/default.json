@@ -8,6 +8,9 @@
         "user": "user",
         "pass": "pwd"
       }
+    },
+    "security": {
+      "secret": "secret"
     }
   }
 }

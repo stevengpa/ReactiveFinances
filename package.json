@@ -16,6 +16,7 @@
     "ejs": "^2.5.1",
     "ejs-locals": "^1.0.2",
     "express": "^4.14.0",
+    "express-jwt": "^3.4.0",
     "http": "0.0.0",
     "jsonwebtoken": "^7.1.7",
     "lodash": "^4.14.1",

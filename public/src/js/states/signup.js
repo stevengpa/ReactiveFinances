@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import {observable, action} from 'mobx';
 import {isEmail} from 'validator';
+
 import translation from '../../../../shared/translation';
 import q from '../q';
 
@@ -38,7 +39,8 @@ export default observable({
 					email: this.email,
 					language: translation.language
 				}
-			}).then(({data}) => {
+			})
+.then(({data}) => {
 				if (_.get(data, 'emailConfirmation', false)) {
 					this.messageType = 'success';
 					this.message = translation.t('signup.success');

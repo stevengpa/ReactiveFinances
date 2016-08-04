@@ -1,6 +1,11 @@
 import _ from 'lodash';
-import {observable, action} from 'mobx';
 import {isEmail} from 'validator';
+import {observable, action} from 'mobx';
+
+import translation from '../../../../shared/translation';
+import auth from '../states/auth';
+
+import q from '../q';
 
 const CODE_LEN = 36;
 
@@ -47,5 +52,34 @@ export default observable({
 	}),
 	setCode: action(function (status) {
 		this.code = status;
+	}),
+	access: action(function() {
+		if (this.formEmailState === 'success' && this.formCodeState === 'success') {
+			q({
+				method: 'post',
+				url:'/login',
+				data: {
+					email: this.email,
+					code: this.code
+				}
+			})
+			.then((response) => {
+
+				if (_.get(response, 'status', 401) === 200) {
+					// Store Token Session
+					auth.set(response.data);
+					// Reset UI message
+					this.messageType = 'warning';
+					this.message = '';
+				} else {
+					this.messageType = 'danger';
+					this.message = translation.t('login.error');
+				}
+			})
+			.catch((err) => {
+				this.messageType = 'danger';
+				this.message = translation.t('login.error');
+			});
+		}
 	})
 });

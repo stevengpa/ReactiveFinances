@@ -79,6 +79,7 @@ export default observer(['store'], React.createClass({
 							block={true}
 							bsStyle="success"
 							disabled={this.login.disabled}
+							onClick={() => this.login.access()}
 						>
 								{this.translation.t('login.login')}
 						</Button>

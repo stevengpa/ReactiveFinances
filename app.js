@@ -4,9 +4,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const ejs = require('ejs-locals');
+const expressJwt = require('express-jwt');
+const config = require('config');
 
 const app = express();
 const dirName = __dirname;
+
+const secret = config.get('app.security.secret');
+const authenticate = require('./private/utils/authentication');
 
 app.use(cors());
 app.use(morgan('tiny'));
@@ -20,12 +25,18 @@ app.engine('html', ejs);
 app.set('views', `${dirName}/views`);
 app.set('view engine', 'html');
 
-app.get('*', (req, res) => {
+const jwtMiddleware = expressJwt({secret}).unless({path: ['/login']});
+
+app.get('*', jwtMiddleware, (req, res) => {
 	res.render('index');
 });
 
 const signupRouter = require('./private/router/signup');
 app.use('/', signupRouter);
+
+const loginRouter = require('./private/router/login');
+app.use('/', authenticate, loginRouter);
+
 
 const httpServer = http.createServer(app);
 httpServer.listen(4001, () => {
