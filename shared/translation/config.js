@@ -3,6 +3,7 @@ module.exports = {
 		header: {
 			language: "Lenguaje",
 			login: "Iniciar sesión",
+			logout: "Cerrar sesión",
 			settings: "Mantenimiento"
 		},
 		login: {
@@ -35,6 +36,7 @@ module.exports = {
 		header: {
 			language: "Language",
 			login: "Log In",
+			logout: "Log Out",
 			settings: "Settings"
 		},
 		login: {

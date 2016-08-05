@@ -7,6 +7,7 @@ import {LinkContainer} from 'react-router-bootstrap';
 export default observer(['store'], React.createClass({
 	componentWillMount() {
 		this.translation = this.props.store.translation;
+		this.auth = this.props.store.auth;
 	},
 	handleSelect(eventKey) {
 		event.preventDefault();
@@ -17,6 +18,18 @@ export default observer(['store'], React.createClass({
 		}
 	},
 	render() {
+		const labelLogInOut = (!this.auth.isAuth) ?
+			this.translation.t('header.login') :
+			this.translation.t('header.logout');
+
+		const pathLogInOut = (!this.auth.isAuth) ? '/login' : '/logout';
+
+		const Settings = (this.auth.isAuth) ? (
+			<LinkContainer to="/settings" className="btn-link header-brandname">
+				<NavItem eventKey="5"><Glyphicon glyph="cog"/>&nbsp;&nbsp;{this.translation.t('header.settings')}</NavItem>
+			</LinkContainer>
+		) : null;
+
 		return (
 			<div className="header">
 				<Navbar>
@@ -42,13 +55,12 @@ export default observer(['store'], React.createClass({
 								<MenuItem eventKey="3" ref="3">EN</MenuItem>
 							</NavDropdown>
 
-							<LinkContainer to="/login" className="btn-link header-brandname">
-								<NavItem eventKey="4"><Glyphicon glyph="user"/>&nbsp;&nbsp;{this.translation.t('header.login')}</NavItem>
+							{Settings}
+
+							<LinkContainer to={pathLogInOut} className="btn-link header-brandname">
+								<NavItem eventKey="4"><Glyphicon glyph="user"/>&nbsp;&nbsp;{labelLogInOut}</NavItem>
 							</LinkContainer>
 
-							<LinkContainer to="/settings" className="btn-link header-brandname">
-								<NavItem eventKey="5"><Glyphicon glyph="cog"/>&nbsp;&nbsp;{this.translation.t('header.settings')}</NavItem>
-							</LinkContainer>
 						</Nav>
 
 					</Navbar.Collapse>

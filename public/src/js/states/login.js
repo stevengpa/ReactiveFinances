@@ -64,13 +64,13 @@ export default observable({
 				}
 			})
 			.then((response) => {
-
 				if (_.get(response, 'status', 401) === 200) {
 					// Store Token Session
 					auth.set(response.data);
 					// Reset UI message
 					this.messageType = 'warning';
 					this.message = '';
+					window.location.reload();
 				} else {
 					this.messageType = 'danger';
 					this.message = translation.t('login.error');

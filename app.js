@@ -25,11 +25,13 @@ app.engine('html', ejs);
 app.set('views', `${dirName}/views`);
 app.set('view engine', 'html');
 
-const jwtMiddleware = expressJwt({secret}).unless({path: ['/login']});
-
-app.get('*', jwtMiddleware, (req, res) => {
+app.get('*', (req, res) => {
 	res.render('index');
 });
+
+const jwtMiddleware = expressJwt({secret})
+	.unless({path: ['/', '/favicon.ico', '/login', '/signup', '/signup/register']});
+app.use(jwtMiddleware);
 
 const signupRouter = require('./private/router/signup');
 app.use('/', signupRouter);
