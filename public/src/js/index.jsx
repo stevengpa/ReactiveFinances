@@ -9,6 +9,7 @@ import Login from './rft/login';
 import Invalid from './rft/invalid';
 import Dashboard from './rft/dashboard';
 import SignUp from './rft/signup';
+import Settings from './rft/settings';
 
 import store from './store';
 
@@ -45,6 +46,7 @@ render(
 				<Route path="logout" onEnter={security}/>
 				<Route path="signup" component={SignUp} onEnter={security}/>
 				<Route path="dashboard" component={Dashboard} onEnter={security}/>
+				<Route path="settings" component={Settings} onEnter={security}/>
 			</Route>
 			<Route path="*" component={Invalid} />
 		</Router>

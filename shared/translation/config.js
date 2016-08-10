@@ -25,11 +25,17 @@ module.exports = {
 			success: "El código de acceso ha sido enviado a tu correo ! :) "
 		},
 		email_code: {
-			title: 'Bienvenido a Reactive Finance Tracking !!!',
-			subject: 'RFT [Credenciales]',
-			credential: 'Tu credenciales son:',
-			user: 'Usuario: ',
-			code: 'Código: '
+			title: "Bienvenido a Reactive Finance Tracking !!!",
+			subject: "RFT [Credenciales]",
+			credential: "Tu credenciales son:",
+			user: "Usuario: ",
+			code: "Código: "
+		},
+		settings: {
+			exchange_rate: "Tipo de cambio",
+			exchange_place: "Local -> USD",
+			local_currency: "Moneda Local",
+			local_currency_place: "ej: CRC"
 		}
 	},
 	en: {
@@ -58,11 +64,17 @@ module.exports = {
 			success: "Your access code was sent to your email ! :) "
 		},
 		email_code: {
-			title: 'Welcome to Reactive Finance Tracking !!!',
-			subject: 'RFT [Credentials]',
-			credential: 'Your credentials are: ',
-			user: 'User: ',
-			code: 'Code: '
+			title: "Welcome to Reactive Finance Tracking !!!",
+			subject: "RFT [Credentials]",
+			credential: "Your credentials are: ",
+			user: "User: ",
+			code: "Code: "
+		},
+		settings: {
+			exchange_rate: "Exchange Rate",
+			exchange_place: "Local -> USD",
+			local_currency: "Local Currency",
+			local_currency_place: "e.g. USD"
 		}
 	}
 };
