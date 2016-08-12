@@ -14,12 +14,8 @@ export default observer(function (props) {
 
 	function saveCurrency() {
 		props.currency.saveCurrency()
-		 .then((result) => {
-			 Notify(props.translation.t('settings.exchange.currency_ok'), 'success');
-		 })
-		 .catch((err) => {
-			 Notify(props.translation.t('settings.exchange.currency_error'), 'danger');
-		 });
+			.then(() => Notify(props.translation.t('settings.exchange.currency_ok'), 'success'))
+			.catch(() => Notify(props.translation.t('settings.exchange.currency_error'), 'danger'));
 	}
 
 	function onExchangeRateChange(e) {

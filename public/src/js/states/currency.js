@@ -22,7 +22,7 @@ export default observable({
 	saveCurrency: action(function() {
 		if (this.isValidCurrency) {
 			return q({
-				method: 'post',
+				method: 'POST',
 				url:'/settings/currency',
 				data: {
 					currency: this.currency,
@@ -32,5 +32,24 @@ export default observable({
 		} else {
 			return Promise.reject(constants.VALIDATION_ERROR);
 		}
+	}),
+	loadCurrency: action(function() {
+		return q({
+			method: 'GET',
+			url: '/settings/currency',
+			data: {
+				code: _.get(auth.user, 'code', '')
+			}
+		})
+			.then((response) => {
+				console.log('=========  response  =========');
+				console.log(response);
+				console.log('=====  End of response>  =====');
+			})
+			.catch((err) => {
+				console.log('=========  err  =========');
+				console.log(err);
+				console.log('=====  End of err>  =====');
+			});
 	})
 });

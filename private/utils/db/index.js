@@ -15,7 +15,11 @@ const db = low(dbPath, {storage: fileAsync});
 
 // Default Schemas
 db
-	.defaults({ users: [] })
+	.defaults({
+		users: [],
+		currency: [],
+		exchange: []
+	})
 	.value();
 
 module.exports = {

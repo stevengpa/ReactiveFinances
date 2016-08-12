@@ -25,7 +25,10 @@ app.engine('html', ejs);
 app.set('views', `${dirName}/views`);
 app.set('view engine', 'html');
 
-app.get('*', (req, res) => {
+app.get('*', (req, res, next) => {
+	if (req.url.indexOf('/api') !== -1) {
+		return next();
+	}
 	res.render('index');
 });
 

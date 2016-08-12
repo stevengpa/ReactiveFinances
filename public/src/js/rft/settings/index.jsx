@@ -8,6 +8,7 @@ export default observer(['store'], React.createClass({
 	componentWillMount() {
 		this.translation = this.props.store.translation;
 		this.currency = this.props.store.settings.currency;
+		this.currency.loadCurrency();
 	},
 	render() {
 		return (

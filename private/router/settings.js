@@ -6,5 +6,6 @@ const router = express.Router({
 const settings = require('../routes/settings');
 
 router.post('/currency', settings.saveCurrency);
+router.get('/currency', settings.getCurrency);
 
 module.exports = router;
