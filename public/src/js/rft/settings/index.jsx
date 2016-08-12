@@ -7,11 +7,16 @@ export default observer(['store'], React.createClass({
 	displayName: 'Settings',
 	componentWillMount() {
 		this.translation = this.props.store.translation;
+		this.currency = this.props.store.settings.currency;
 	},
 	render() {
 		return (
 			<div>
-				<ExchangeRate translation={this.translation} />
+				<div id="nowtify"></div>
+				<ExchangeRate
+					translation={this.translation}
+				  currency={this.currency}
+				/>
 			</div>
 		);
 	}

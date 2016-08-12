@@ -11,7 +11,7 @@ const app = express();
 const dirName = __dirname;
 
 const secret = config.get('app.security.secret');
-const authenticate = require('./private/utils/authentication');
+const {authenticate} = require('./private/utils/authentication');
 
 app.use(cors());
 app.use(morgan('tiny'));
@@ -35,6 +35,9 @@ app.use(jwtMiddleware);
 
 const signupRouter = require('./private/router/signup');
 app.use('/', signupRouter);
+
+const settingsRouter = require('./private/router/settings');
+app.use('/settings', settingsRouter);
 
 const loginRouter = require('./private/router/login');
 app.use('/', authenticate, loginRouter);

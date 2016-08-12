@@ -1,5 +1,5 @@
-import {observable, action} from 'mobx';
+import currency from './currency';
 
-export default observable({
-	localCurrency: ''
-});
+export default {
+	currency
+};

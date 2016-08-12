@@ -9,3 +9,29 @@ body {
 .hide-element {
   display: none;
 }
+
+.rft-input {
+  border: 0;
+  border-bottom: 0.1rem solid $color-blue-03;
+  border-radius: 0;
+
+  &:focus {
+    border-bottom: 0.1rem solid $color-emerald;
+  }
+}
+
+.rft-input-error {
+  border: 0;
+  border-bottom: 0.1rem solid $color-red-01;
+  border-radius: 0;
+
+  &:focus {
+    border-bottom: 0.1rem solid $color-red-04;
+  }
+}
+
+#nowtify {
+  .nowtify-box__notification-list {
+    position: absolute;
+  }
+}

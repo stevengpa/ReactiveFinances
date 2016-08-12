@@ -32,10 +32,16 @@ module.exports = {
 			code: "Código: "
 		},
 		settings: {
-			exchange_rate: "Tipo de cambio",
-			exchange_place: "Local -> USD",
-			local_currency: "Moneda Local",
-			local_currency_place: "ej: CRC"
+			exchange: {
+				rate: "Tipo de cambio",
+				rate_place: "Local -> USD",
+				rate_ok: "El tipo de cambio ha sido guardado",
+				rate_error: "El tipo de cambio es incorrecto",
+				currency: "Moneda Local",
+				currency_place: "ej: CRC",
+				currency_ok: "La moneda local ha sido guardada",
+				currency_error: "La moneda local es incorrecta"
+			}
 		}
 	},
 	en: {
@@ -71,10 +77,16 @@ module.exports = {
 			code: "Code: "
 		},
 		settings: {
-			exchange_rate: "Exchange Rate",
-			exchange_place: "Local -> USD",
-			local_currency: "Local Currency",
-			local_currency_place: "e.g. USD"
+			exchange: {
+				rate: "Exchange Rate",
+				rate_place: "Local -> USD",
+				rate_ok: "The exchange rate was saved",
+				rate_error: "Wrong exchange rate value",
+				currency: "Local Currency",
+				currency_place: "e.g. USD",
+				currency_ok: "The local currency was saved",
+				currency_error: "Wrong local currency value"
+			}
 		}
 	}
 };
