@@ -15,11 +15,23 @@ export default observer(function (props) {
 	function saveCurrency() {
 		props.currency.saveCurrency()
 			.then(() => Notify(props.translation.t('settings.exchange.currency_ok'), 'success'))
-			.catch(() => Notify(props.translation.t('settings.exchange.currency_error'), 'danger'));
+			.catch(() => {
+				Notify(props.translation.t('settings.exchange.currency_error'), 'error');
+				props.currency.loadCurrency();
+			});
+	}
+
+	function saveExchange() {
+		props.currency.saveExchange()
+			.then(() => Notify(props.translation.t('settings.exchange.rate_ok'), 'success'))
+			.catch(() => {
+				Notify(props.translation.t('settings.exchange.rate_error'), 'error');
+				props.currency.loadCurrency();
+			});
 	}
 
 	function onExchangeRateChange(e) {
-		props.currency.exchange = _.toUpper(e.target.value);
+		props.currency.exchange = _.toInteger(e.target.value);
 	}
 
 	return (
@@ -41,6 +53,7 @@ export default observer(function (props) {
 										'rft-input-error': !props.currency.isValidCurrency
 									})
 								}
+								value={props.currency.currency}
 							  onChange={onCurrencyChange}
 							  onBlur={saveCurrency}
 							/>
@@ -53,7 +66,7 @@ export default observer(function (props) {
 							<ControlLabel>{props.translation.t('settings.exchange.rate')}</ControlLabel>
 							{' '}
 							<FormControl
-								type="text"
+								type="number"
 								placeholder={props.translation.t('settings.exchange.rate_place')}
 								className={
 									classNames({
@@ -62,7 +75,9 @@ export default observer(function (props) {
 										'rft-input-error': !props.currency.isValidExchange
 									})
 								}
+								value={props.currency.exchange}
 							  onChange={onExchangeRateChange}
+							  onBlur={saveExchange}
 							/>
 						</FormGroup>
 					</Form>

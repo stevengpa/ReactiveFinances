@@ -40,7 +40,7 @@ const signupRouter = require('./private/router/signup');
 app.use('/', signupRouter);
 
 const settingsRouter = require('./private/router/settings');
-app.use('/settings', settingsRouter);
+app.use('/api/settings', settingsRouter);
 
 const loginRouter = require('./private/router/login');
 app.use('/', authenticate, loginRouter);

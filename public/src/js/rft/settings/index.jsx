@@ -13,7 +13,6 @@ export default observer(['store'], React.createClass({
 	render() {
 		return (
 			<div>
-				<div id="nowtify"></div>
 				<ExchangeRate
 					translation={this.translation}
 				  currency={this.currency}

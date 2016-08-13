@@ -1,5 +1,6 @@
 const _ = require('lodash');
-const {isNumeric, isLength} = require('validator');
+const {isLength} = require('validator');
+const {isNumber} = require('../../shared/validations');
 const uuid = require('uuid');
 
 const db = require('../utils/db');
@@ -19,7 +20,7 @@ module.exports = {
 		const currency = _.get(req.body, 'currency', '');
 		const user = getUserByPublicCode(code);
 
-		if (_.size(user) === 0 || !isLength(code, CODE_LEN) || !isLength(currency, 3) || isNumeric(currency)) {
+		if (_.size(user) === 0 || !isLength(code, CODE_LEN) || !isLength(currency, 3) || isNumber(currency)) {
 			res.status(406).end();
 			return;
 		}
@@ -49,17 +50,53 @@ module.exports = {
 		res.status(200).end();
 	},
 	getCurrency(req, res) {
-		console.log('ajasdjaskdr');
-		const code = _.get(req.body, 'code', '');
+		const code = _.get(req.query, 'code', '');
 		const user = getUserByPublicCode(code);
+
 		if (_.size(user) === 0 || !isLength(code, CODE_LEN)) {
 			res.status(406).end();
 			return;
 		}
 
 		const {private_code} = user;
-		const {currency} = getUserByPublicCode(private_code);
+		let {currency, exchange} = getCurrency(private_code);
+		currency = currency || '';
+		exchange = exchange || 1;
 
-		res.json({currency});
+		res.send({currency, exchange});
+	},
+	saveExchange(req, res) {
+		const code = _.get(req.body, 'code', '');
+		const exchange = _.get(req.body, 'exchange', '');
+		const user = getUserByPublicCode(code);
+
+		if (_.size(user) === 0 || !isNumber(exchange)) {
+			res.status(406).end();
+			return;
+		}
+
+		const {id: userId, private_code} = user;
+		const localCurrency = getCurrency(private_code);
+
+		if (_.size(localCurrency) > 0) {
+
+			db.table('currency')
+				.find({id: localCurrency.id})
+				.assign({exchange})
+				.value();
+
+		} else {
+
+			db.table('currency')
+				.push({
+					id: uuid.v4(),
+					exchange,
+					user_id: userId,
+					private_code
+				})
+				.value();
+		}
+
+		res.status(200).end();
 	}
 };
