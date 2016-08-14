@@ -12,7 +12,7 @@ export default observable({
 	// Observables
 	currency: '',
 	exchange: 1,
-	code: auth.user.code,
+	code: _.get(auth, 'user.code', ''),
 	// Computeds
 	isValidCurrency() {
 		return isLength(this.currency, 3) && !isNumber(this.currency);

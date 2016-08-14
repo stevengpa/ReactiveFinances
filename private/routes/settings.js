@@ -14,7 +14,14 @@ function getCurrency(private_code) {
 		.value();
 }
 
+function getCategory(filters) {
+	return db.table('category')
+		.find(filters)
+		.value();
+}
+
 module.exports = {
+	// Currency
 	saveCurrency(req, res) {
 		const code = _.get(req.body, 'code', '');
 		const currency = _.get(req.body, 'currency', '');
@@ -49,6 +56,7 @@ module.exports = {
 
 		res.status(200).end();
 	},
+	// Currency and Exchange
 	getCurrency(req, res) {
 		const code = _.get(req.query, 'code', '');
 		const user = getUserByPublicCode(code);
@@ -65,6 +73,7 @@ module.exports = {
 
 		res.send({currency, exchange});
 	},
+	// Exchange
 	saveExchange(req, res) {
 		const code = _.get(req.body, 'code', '');
 		const exchange = _.get(req.body, 'exchange', '');
@@ -98,5 +107,85 @@ module.exports = {
 		}
 
 		res.status(200).end();
+	},
+	// Category
+	saveCategory(req, res) {
+		const code = _.get(req.body, 'code', '');
+		const category = _.get(req.body, 'category', '');
+		const user = getUserByPublicCode(code);
+
+		if (_.size(user) === 0 || _.size(category) === 0) {
+			res.status(406).end();
+			return;
+		}
+
+		const {id: userId, private_code} = user;
+		const dbCategory = getCategory({
+			user_id: userId,
+			private_code,
+			category
+		});
+
+		if (_.size(dbCategory) > 0) {
+			res.status(406).end();
+			return;
+		}
+
+		db.table('category')
+			.push({
+				id: uuid.v4(),
+				category,
+				user_id: userId,
+				private_code
+			})
+			.value();
+
+		res.status(200).end();
+	},
+	updateCategory(req, res) {
+		const code = _.get(req.body, 'code', '');
+		const category_id = _.get(req.body, 'id', '');
+		const category = _.get(req.body, 'category', '');
+		const user = getUserByPublicCode(code);
+
+		if (_.size(user) === 0 || _.size(category_id) === 0 || _.size(category) === 0) {
+			res.status(406).end();
+			return;
+		}
+
+		const dbCategory = getCategory({
+			id: category_id
+		});
+
+		if (_.size(dbCategory) === 0) {
+			res.status(406).end();
+			return;
+		}
+
+		db.table('category')
+			.find({id: dbCategory.id})
+			.assign({
+				category
+			})
+			.value();
+
+		res.status(200).end();
+	},
+	loadCategories(req, res) {
+		const code = _.get(req.query, 'code', '');
+		const user = getUserByPublicCode(code);
+
+		if (_.size(user) === 0) {
+			res.status(406).end();
+			return;
+		}
+
+		const dbCategory = db.table('category')
+			.filter({user_id: user.id})
+			.map((category) => _.pick(category, ['id', 'category']))
+			.sortBy('category')
+			.value() || [];
+
+		res.send(dbCategory);
 	}
 };

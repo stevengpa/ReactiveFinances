@@ -18,7 +18,8 @@ db
 	.defaults({
 		users: [],
 		currency: [],
-		exchange: []
+		exchange: [],
+		category: []
 	})
 	.value();
 

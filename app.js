@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const ejs = require('ejs-locals');
 const expressJwt = require('express-jwt');
 const config = require('config');
+const methodOverride = require('method-override');
 
 const app = express();
 const dirName = __dirname;
@@ -15,6 +16,7 @@ const {authenticate} = require('./private/utils/authentication');
 
 app.use(cors());
 app.use(morgan('tiny'));
+app.use(methodOverride('_method'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

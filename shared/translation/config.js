@@ -33,15 +33,42 @@ module.exports = {
 		},
 		settings: {
 			exchange: {
-				rate: "Tipo de cambio",
+				rate: "Tipo de cambio (USD)",
 				rate_place: "Local -> USD",
 				rate_ok: "El tipo de cambio ha sido guardado",
 				rate_error: "El tipo de cambio es incorrecto",
 				currency: "Moneda Local",
 				currency_place: "ej: CRC",
 				currency_ok: "La moneda local ha sido guardada",
-				currency_error: "La moneda local es incorrecta"
+				currency_error: "La moneda local contiene un valor incorrecto"
+			},
+			category: {
+				category: "Categoría",
+				category_place: "Nombre",
+				category_ok: "La Categoría ha sido guardada",
+				category_error: "La Categoía contine un valor incorrecto ó ya se encuentra en la lista",
+				grid: {
+					category: "Categoría"
+				}
 			}
+		},
+		menu: {
+			edit: 'Editar',
+			delete: "Eliminar"
+		},
+		months: {
+			january: "Enero",
+			february: "Febrero",
+			march: "Marzo",
+			april: "Abril",
+			may: "Mayo",
+			june: "Junio",
+			july: "Julio",
+			august: "Agosto",
+			september: "Setiembre",
+			october: "Octubre",
+			november: "Noviembre",
+			december: "Diciembre"
 		}
 	},
 	en: {
@@ -78,7 +105,7 @@ module.exports = {
 		},
 		settings: {
 			exchange: {
-				rate: "Exchange Rate",
+				rate: "Exchange Rate (USD)",
 				rate_place: "Local -> USD",
 				rate_ok: "The exchange rate was saved",
 				rate_error: "Wrong exchange rate value",
@@ -86,7 +113,34 @@ module.exports = {
 				currency_place: "e.g. USD",
 				currency_ok: "The local currency was saved",
 				currency_error: "Wrong local currency value"
+			},
+			category: {
+				category: "Category",
+				category_place: "Name",
+				category_ok: "The Categoría was saved",
+				category_error: "Wrong Categoía value or it already was listed",
+				grid: {
+					category: "Category"
+				}
 			}
-		}
+		},
+		months: {
+			january: "January",
+			february: "February",
+			march: "March",
+			april: "April",
+			may: "May",
+			june: "June",
+			july: "July",
+			august: "August",
+			september: "September",
+			october: "October",
+			november: "November",
+			december: "December"
+		},
+		menu: {
+			edit: 'Edit',
+			delete: "Delete"
+		},
 	}
 };
