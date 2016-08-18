@@ -47,6 +47,7 @@ module.exports = {
 				category_place: "Nombre",
 				category_ok: "La Categoría ha sido guardada",
 				category_error: "La Categoía contine un valor incorrecto ó ya se encuentra en la lista",
+				category_update_ok: "La Categoría ha sido actualizada",
 				grid: {
 					category: "Categoría"
 				}
@@ -119,6 +120,7 @@ module.exports = {
 				category_place: "Name",
 				category_ok: "The Categoría was saved",
 				category_error: "Wrong Categoía value or it already was listed",
+				category_update_ok: "The Categoría was updated",
 				grid: {
 					category: "Category"
 				}

@@ -16,7 +16,7 @@ function getCurrency(private_code) {
 
 function getCategory(filters) {
 	return db.table('category')
-		.find(filters)
+		.filter(filters)
 		.value();
 }
 
@@ -147,6 +147,7 @@ module.exports = {
 		const category_id = _.get(req.body, 'id', '');
 		const category = _.get(req.body, 'category', '');
 		const user = getUserByPublicCode(code);
+		const {id: userId, private_code} = user;
 
 		if (_.size(user) === 0 || _.size(category_id) === 0 || _.size(category) === 0) {
 			res.status(406).end();
@@ -154,16 +155,24 @@ module.exports = {
 		}
 
 		const dbCategory = getCategory({
+			user_id: userId,
+			private_code,
 			id: category_id
 		});
 
-		if (_.size(dbCategory) === 0) {
+		const exists = getCategory({
+			user_id: userId,
+			private_code,
+			category
+		});
+
+		if (_.size(dbCategory) === 0 || _.size(exists) > 0) {
 			res.status(406).end();
 			return;
 		}
 
 		db.table('category')
-			.find({id: dbCategory.id})
+			.find({id: dbCategory[0].id})
 			.assign({
 				category
 			})

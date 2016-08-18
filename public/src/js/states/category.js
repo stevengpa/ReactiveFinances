@@ -16,7 +16,7 @@ export default observable({
 		return !_.isEmpty(this.category);
 	},
 	// Actions
-	saveCategory: action(function() {
+	saveCategory: action(function saveCategory() {
 		if (this.isValidCategory) {
 			return q({
 				method: 'POST',
@@ -30,8 +30,8 @@ export default observable({
 			return Promise.reject(constants.VALIDATION_ERROR);
 		}
 	}),
-	updateCategory: action(function(id, category) {
-		if (this.isValidCategory) {
+	updateCategory: action(function updateCategory(id, category) {
+		if (!_.isEmpty(category)) {
 			return q({
 				method: 'PUT',
 				url:'/api/settings/category',
@@ -45,7 +45,7 @@ export default observable({
 			return Promise.reject(constants.VALIDATION_ERROR);
 		}
 	}),
-	loadCategories: action(function() {
+	loadCategories: action(function loadCategories() {
 		return q({
 			method: 'GET',
 			url: '/api/settings/category',
