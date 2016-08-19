@@ -143,11 +143,12 @@ module.exports = {
 		res.status(200).end();
 	},
 	updateCategory(req, res) {
-		const {code, id, category, active} = req.body;
+		const {code, id, category, active: act} = req.body;
 		const user = getUserByPublicCode(code);
 		const {id: user_id, private_code} = user;
 
-		if (_.size(user) === 0 || _.size(id) === 0 || _.size(category) === 0 || _.size(active) === 0) {
+		const active = _.toString(act) === 'true';
+		if (_.size(user) === 0 || _.size(id) === 0 || _.size(category) === 0 || !_.isBoolean(active)) {
 			res.status(406).end();
 			return;
 		}
@@ -158,14 +159,7 @@ module.exports = {
 			id
 		});
 
-		const exists = _.chain(getCategory({
-				user_id,
-				private_code
-			}))
-			.filter(({category: cat}) => _.toLower(cat) === _.toLower(category))
-			.value();
-
-		if (_.size(dbCategory) === 0 || _.size(exists) > 0) {
+		if (_.size(dbCategory) === 0) {
 			res.status(406).end();
 			return;
 		}

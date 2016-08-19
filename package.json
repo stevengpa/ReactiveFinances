@@ -4,6 +4,7 @@
   "description": "Reactive Finance Tracking",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Steven Pérez Alfaro",

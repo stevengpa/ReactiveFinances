@@ -38,7 +38,7 @@ export default observable({
 				data: {
 					id,
 					category,
-					active,
+					active: _.toString(active) === 'true',
 					code: this.code
 				}
 			});

@@ -18,7 +18,8 @@ export default observer(function Category(props) {
 			props.category.saveCategory()
 				.then(() => {
 					Notify(props.translation.t('settings.category.category_ok'), 'success');
-					_.delay(() => props.category.category = '', 500);
+					props.category.category = '';
+					props.category.loadCategories();
 				})
 				.catch(() => {
 					Notify(props.translation.t('settings.category.category_error'), 'error');
@@ -27,22 +28,30 @@ export default observer(function Category(props) {
 		}
 	}
 
+	function activeFormatter(cell, row) {
+		const active = _.toString(cell) === 'true';
+		return (
+			<input type="checkbox" defaultChecked={active}/>
+		);
+	}
+
 	const cellEditProp = {
 		mode: 'click',
-		blurToSave: true,
+		blurToSave: false,
 		afterSaveCell: onAfterSaveCell
 	};
 
 	function onAfterSaveCell(row, cellName, cellValue) {
-		const {id} = row;
+		const {id, category, active} = row;
 
-		props.category.updateCategory(id, cellValue)
+		props.category.updateCategory(id, category, active)
 			.then(() => {
 				Notify(props.translation.t('settings.category.category_update_ok'), 'success');
-				row.category = cellValue;
-				props.category.categories = _.chain(props.category.categories)
-					.sortBy(['category'])
-					.value();
+
+				row.category = category;
+				row.active = active;
+
+				props.category.loadCategories();
 			})
 			.catch(() => {
 				Notify(props.translation.t('settings.category.category_error'), 'error');
@@ -84,7 +93,8 @@ export default observer(function Category(props) {
 				<Col md={2}/>
 			</Row>
 			<Row>
-				<Col md={12} className="align-center grid-container">
+				<Col md={2}/>
+				<Col md={8} className="align-center grid-container">
 					<BootstrapTable
 						data={props.category.categories.toJS()}
 						striped={true}
@@ -114,15 +124,17 @@ export default observer(function Category(props) {
 
 						<TableHeaderColumn
 							dataField="active"
-							editable={true}
+							dataFormat={activeFormatter}
 							dataAlign="center"
 							dataSort={true}
+							editable={{type:'checkbox', options:{values:'true:false'}}}
 						>
 							{props.translation.t('settings.category.grid.active')}
 						</TableHeaderColumn>
 
 					</BootstrapTable>
 				</Col>
+				<Col md={2}/>
 			</Row>
 		</div>
 	);
