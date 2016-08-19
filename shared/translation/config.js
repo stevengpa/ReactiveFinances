@@ -49,7 +49,8 @@ module.exports = {
 				category_error: "La Categoía contine un valor incorrecto ó ya se encuentra en la lista",
 				category_update_ok: "La Categoría ha sido actualizada",
 				grid: {
-					category: "Categoría"
+					category: "Categoría",
+					active: "Activo"
 				}
 			}
 		},
@@ -122,7 +123,8 @@ module.exports = {
 				category_error: "Wrong Categoía value or it already was listed",
 				category_update_ok: "The Categoría was updated",
 				grid: {
-					category: "Category"
+					category: "Category",
+					active: "Active"
 				}
 			}
 		},

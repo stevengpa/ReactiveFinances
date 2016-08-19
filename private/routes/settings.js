@@ -110,8 +110,7 @@ module.exports = {
 	},
 	// Category
 	saveCategory(req, res) {
-		const code = _.get(req.body, 'code', '');
-		const category = _.get(req.body, 'category', '');
+		const {code, category} = req.body;
 		const user = getUserByPublicCode(code);
 
 		if (_.size(user) === 0 || _.size(category) === 0) {
@@ -119,9 +118,9 @@ module.exports = {
 			return;
 		}
 
-		const {id: userId, private_code} = user;
+		const {id: user_id, private_code} = user;
 		const dbCategory = getCategory({
-			user_id: userId,
+			user_id,
 			private_code,
 			category
 		});
@@ -135,36 +134,36 @@ module.exports = {
 			.push({
 				id: uuid.v4(),
 				category,
-				user_id: userId,
-				private_code
+				user_id,
+				private_code,
+				active: true
 			})
 			.value();
 
 		res.status(200).end();
 	},
 	updateCategory(req, res) {
-		const code = _.get(req.body, 'code', '');
-		const category_id = _.get(req.body, 'id', '');
-		const category = _.get(req.body, 'category', '');
+		const {code, id, category, active} = req.body;
 		const user = getUserByPublicCode(code);
-		const {id: userId, private_code} = user;
+		const {id: user_id, private_code} = user;
 
-		if (_.size(user) === 0 || _.size(category_id) === 0 || _.size(category) === 0) {
+		if (_.size(user) === 0 || _.size(id) === 0 || _.size(category) === 0 || _.size(active) === 0) {
 			res.status(406).end();
 			return;
 		}
 
 		const dbCategory = getCategory({
-			user_id: userId,
+			user_id,
 			private_code,
-			id: category_id
+			id
 		});
 
-		const exists = getCategory({
-			user_id: userId,
-			private_code,
-			category
-		});
+		const exists = _.chain(getCategory({
+				user_id,
+				private_code
+			}))
+			.filter(({category: cat}) => _.toLower(cat) === _.toLower(category))
+			.value();
 
 		if (_.size(dbCategory) === 0 || _.size(exists) > 0) {
 			res.status(406).end();
@@ -174,7 +173,8 @@ module.exports = {
 		db.table('category')
 			.find({id: dbCategory[0].id})
 			.assign({
-				category
+				category,
+				active
 			})
 			.value();
 
@@ -191,7 +191,7 @@ module.exports = {
 
 		const dbCategory = db.table('category')
 			.filter({user_id: user.id})
-			.map((category) => _.pick(category, ['id', 'category']))
+			.map((category) => _.pick(category, ['id', 'category', 'active']))
 			.sortBy('category')
 			.value() || [];
 

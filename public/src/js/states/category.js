@@ -30,7 +30,7 @@ export default observable({
 			return Promise.reject(constants.VALIDATION_ERROR);
 		}
 	}),
-	updateCategory: action(function updateCategory(id, category) {
+	updateCategory: action(function updateCategory(id, category, active) {
 		if (!_.isEmpty(category)) {
 			return q({
 				method: 'PUT',
@@ -38,6 +38,7 @@ export default observable({
 				data: {
 					id,
 					category,
+					active,
 					code: this.code
 				}
 			});

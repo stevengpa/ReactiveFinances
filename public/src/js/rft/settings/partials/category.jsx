@@ -36,23 +36,18 @@ export default observer(function Category(props) {
 	function onAfterSaveCell(row, cellName, cellValue) {
 		const {id} = row;
 
-		if (cellName === 'category') {
-			props.category.updateCategory(id, cellValue)
-				.then((response) => {
-					//TODO: Check why double alert is displayed when Category is updated
-					console.log('=========  response  =========');
-					console.log(response);
-					console.log('=====  End of response>  =====');
-					Notify(props.translation.t('settings.category.category_update_ok'), 'success');
-					row.category = cellValue;
-					props.category.categories = props.category.categories.sortBy(['category']);
-				})
-				.catch(() => {
-					Notify(props.translation.t('settings.category.category_error'), 'error');
-					props.category.loadCategories();
-				});
-		}
-
+		props.category.updateCategory(id, cellValue)
+			.then(() => {
+				Notify(props.translation.t('settings.category.category_update_ok'), 'success');
+				row.category = cellValue;
+				props.category.categories = _.chain(props.category.categories)
+					.sortBy(['category'])
+					.value();
+			})
+			.catch(() => {
+				Notify(props.translation.t('settings.category.category_error'), 'error');
+				props.category.loadCategories();
+			});
 	}
 
 	function onSubmit(e) {
@@ -89,14 +84,14 @@ export default observer(function Category(props) {
 				<Col md={2}/>
 			</Row>
 			<Row>
-				<Col md={2}/>
-				<Col md={8} className="align-center">
+				<Col md={12} className="align-center grid-container">
 					<BootstrapTable
 						data={props.category.categories.toJS()}
 						striped={true}
 						hover={true}
 						condensed={true}
 						cellEdit={cellEditProp}
+						pagination={true}
 					>
 
 						<TableHeaderColumn
@@ -117,9 +112,17 @@ export default observer(function Category(props) {
 							{props.translation.t('settings.category.grid.category')}
 						</TableHeaderColumn>
 
+						<TableHeaderColumn
+							dataField="active"
+							editable={true}
+							dataAlign="center"
+							dataSort={true}
+						>
+							{props.translation.t('settings.category.grid.active')}
+						</TableHeaderColumn>
+
 					</BootstrapTable>
 				</Col>
-				<Col md={2}/>
 			</Row>
 		</div>
 	);
