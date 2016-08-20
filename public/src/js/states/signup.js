@@ -30,7 +30,7 @@ export default observable({
 	setEmail: action(function setEmail(status) {
 		this.email = status;
 	}),
-	register: action(function() {
+	register: action(function register() {
 		if (this.formState === 'success') {
 			q({
 				method: 'post',
@@ -40,7 +40,7 @@ export default observable({
 					language: translation.language
 				}
 			})
-.then(({data}) => {
+			.then(({data}) => {
 				if (_.get(data, 'emailConfirmation', false)) {
 					this.messageType = 'success';
 					this.message = translation.t('signup.success');
@@ -49,7 +49,7 @@ export default observable({
 					this.message = translation.t('signup.error');
 				}
 			})
-			.catch((err) => {
+			.catch(() => {
 				this.messageType = 'danger';
 				this.message = translation.t('signup.error');
 			});

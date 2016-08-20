@@ -46,11 +46,22 @@ module.exports = {
 				category: "Categoría",
 				category_place: "Nombre",
 				category_ok: "La Categoría ha sido guardada",
-				category_error: "La Categoía contine un valor incorrecto ó ya se encuentra en la lista",
+				category_error: "La Categoía contiene un valor incorrecto ó ya se encuentra en la lista",
 				category_update_ok: "La Categoría ha sido actualizada",
 				grid: {
 					category: "Categoría",
-					active: "Activo"
+					active: "Activa"
+				}
+			},
+			label: {
+				label: "Etiqueta",
+				label_place: "Nombre",
+				label_ok: "La Etiqueta ha sido guardada",
+				label_error: "La Etiqueta contiene un valor incorrecto ó ya se encuentra en la lista",
+				label_update_ok: "La Etiqueta fue actualizada",
+				grid: {
+					label: "Etiqueta",
+					active: "Activa"
 				}
 			}
 		},
@@ -124,6 +135,17 @@ module.exports = {
 				category_update_ok: "The Categoría was updated",
 				grid: {
 					category: "Category",
+					active: "Active"
+				}
+			},
+			label: {
+				label: "Label",
+				label_place: "Name",
+				label_ok: "The Label was saved",
+				label_error: "Wrong Label value or it already was listed",
+				label_update_ok: "The Label was updated",
+				grid: {
+					label: "Label",
 					active: "Active"
 				}
 			}

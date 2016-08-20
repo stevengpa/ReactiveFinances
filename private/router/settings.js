@@ -13,4 +13,8 @@ router.post('/category', settings.saveCategory);
 router.put('/category', settings.updateCategory);
 router.get('/category', settings.loadCategories);
 
+router.post('/label', settings.saveLabel);
+router.put('/label', settings.updateLabel);
+router.get('/label', settings.loadLabels);
+
 module.exports = router;

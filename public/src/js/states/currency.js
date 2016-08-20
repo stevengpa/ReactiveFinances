@@ -21,7 +21,7 @@ export default observable({
 		return isNumber(this.exchange) && _.gt(this.exchange, 0);
 	},
 	// Actions
-	saveCurrency: action(function() {
+	saveCurrency: action(function saveCurrency() {
 		if (this.isValidCurrency) {
 			return q({
 				method: 'POST',
@@ -35,7 +35,7 @@ export default observable({
 			return Promise.reject(constants.VALIDATION_ERROR);
 		}
 	}),
-	loadCurrency: action(function() {
+	loadCurrency: action(function loadCurrency() {
 		return q({
 			method: 'GET',
 			url: '/api/settings/currency',
@@ -49,7 +49,7 @@ export default observable({
 				this.exchange = exchange || 0;
 			});
 	}),
-	saveExchange: action(function() {
+	saveExchange: action(function saveExchange() {
 		if (this.isValidExchange) {
 			return q({
 				method: 'POST',

@@ -47,13 +47,13 @@ export default observable({
 		return (_.size(this.code) === CODE_LEN);
 	},
 	// Actions:
-	setEmail: action(function (status) {
+	setEmail: action(function setEmail(status) {
 		this.email = status;
 	}),
-	setCode: action(function (status) {
+	setCode: action(function setCode(status) {
 		this.code = status;
 	}),
-	access: action(function() {
+	access: action(function access() {
 		if (this.formEmailState === 'success' && this.formCodeState === 'success') {
 			q({
 				method: 'post',
@@ -76,7 +76,7 @@ export default observable({
 					this.message = translation.t('login.error');
 				}
 			})
-			.catch((err) => {
+			.catch(() => {
 				this.messageType = 'danger';
 				this.message = translation.t('login.error');
 			});

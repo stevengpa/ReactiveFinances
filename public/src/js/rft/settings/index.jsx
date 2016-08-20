@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 
 import ExchangeRate from './partials/exchange-rate';
 import Category from './partials/category';
+import Label from './partials/label';
 
 export default observer(['store'], React.createClass({
 	displayName: 'Settings',
@@ -11,9 +12,11 @@ export default observer(['store'], React.createClass({
 		this.translation = this.props.store.translation;
 		this.currency = this.props.store.settings.currency;
 		this.category = this.props.store.settings.category;
+		this.label = this.props.store.settings.label;
 
 		this.currency.loadCurrency();
 		this.category.loadCategories();
+		this.label.loadLabels();
 	},
 	render() {
 		return (
@@ -30,7 +33,12 @@ export default observer(['store'], React.createClass({
 								category={this.category}
 							/>
 						</Col>
-						<Col md={6}/>
+						<Col md={6}>
+							<Label
+								translation={this.translation}
+								label={this.label}
+							/>
+						</Col>
 					</Row>
 				</Grid>
 			</div>

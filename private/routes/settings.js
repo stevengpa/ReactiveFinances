@@ -7,21 +7,18 @@ const db = require('../utils/db');
 const {getUserByPublicCode} = require('../utils/authentication');
 
 const CODE_LEN = 36;
+const CURRENCY_TABLE = 'currency';
+const CATEGORY_TABLE = 'category';
+const LABEL_TABLE = 'label';
 
-function getCurrency(private_code) {
-	return db.table('currency')
-		.find({private_code})
-		.value();
-}
-
-function getCategory(filters) {
-	return db.table('category')
+function getData(table, filters) {
+	return db.table(table)
 		.filter(filters)
 		.value();
 }
 
 module.exports = {
-	// Currency
+	// ======================= >> CURRENCY << =======================
 	saveCurrency(req, res) {
 		const code = _.get(req.body, 'code', '');
 		const currency = _.get(req.body, 'currency', '');
@@ -33,18 +30,18 @@ module.exports = {
 		}
 
 		const {id: userId, private_code} = user;
-		const localCurrency = getCurrency(private_code);
+		const localCurrency = _.get(getData(CURRENCY_TABLE, {private_code}), '[0]', {});
 
 		if (_.size(localCurrency) > 0) {
 
-			db.table('currency')
+			db.table(CURRENCY_TABLE)
 				.find({id: localCurrency.id})
 				.assign({currency})
 				.value();
 
 		} else {
 
-			db.table('currency')
+			db.table(CURRENCY_TABLE)
 				.push({
 					id: uuid.v4(),
 					currency,
@@ -67,13 +64,13 @@ module.exports = {
 		}
 
 		const {private_code} = user;
-		let {currency, exchange} = getCurrency(private_code);
+		let {currency, exchange} = _.get(getData(CURRENCY_TABLE, {private_code}), '[0]', {});
 		currency = currency || '';
 		exchange = exchange || 1;
 
 		res.send({currency, exchange});
 	},
-	// Exchange
+	// ======================= >> EXCHANGE << =======================
 	saveExchange(req, res) {
 		const code = _.get(req.body, 'code', '');
 		const exchange = _.get(req.body, 'exchange', '');
@@ -85,18 +82,18 @@ module.exports = {
 		}
 
 		const {id: userId, private_code} = user;
-		const localCurrency = getCurrency(private_code);
+		const localCurrency = _.get(getData(CURRENCY_TABLE, {private_code}), '[0]', {});
 
 		if (_.size(localCurrency) > 0) {
 
-			db.table('currency')
+			db.table(CURRENCY_TABLE)
 				.find({id: localCurrency.id})
 				.assign({exchange})
 				.value();
 
 		} else {
 
-			db.table('currency')
+			db.table(CURRENCY_TABLE)
 				.push({
 					id: uuid.v4(),
 					exchange,
@@ -108,7 +105,7 @@ module.exports = {
 
 		res.status(200).end();
 	},
-	// Category
+	// ======================= >> CATEGORY << =======================
 	saveCategory(req, res) {
 		const {code, category} = req.body;
 		const user = getUserByPublicCode(code);
@@ -119,7 +116,7 @@ module.exports = {
 		}
 
 		const {id: user_id, private_code} = user;
-		const dbCategory = getCategory({
+		const dbCategory = getData(CATEGORY_TABLE, {
 			user_id,
 			private_code,
 			category
@@ -130,7 +127,7 @@ module.exports = {
 			return;
 		}
 
-		db.table('category')
+		db.table(CATEGORY_TABLE)
 			.push({
 				id: uuid.v4(),
 				category,
@@ -153,7 +150,7 @@ module.exports = {
 			return;
 		}
 
-		const dbCategory = getCategory({
+		const dbCategory = getData(CATEGORY_TABLE, {
 			user_id,
 			private_code,
 			id
@@ -164,7 +161,7 @@ module.exports = {
 			return;
 		}
 
-		db.table('category')
+		db.table(CATEGORY_TABLE)
 			.find({id: dbCategory[0].id})
 			.assign({
 				category,
@@ -183,12 +180,95 @@ module.exports = {
 			return;
 		}
 
-		const dbCategory = db.table('category')
+		const dbCategory = db.table(CATEGORY_TABLE)
 			.filter({user_id: user.id})
 			.map((category) => _.pick(category, ['id', 'category', 'active']))
 			.sortBy('category')
 			.value() || [];
 
 		res.send(dbCategory);
+	},
+	// ======================= >> LABELS << =======================
+	saveLabel(req, res) {
+		const {code, label} = req.body;
+		const user = getUserByPublicCode(code);
+
+		if (_.size(user) === 0 || _.size(label) === 0) {
+			res.status(406).end();
+			return;
+		}
+
+		const {id: user_id, private_code} = user;
+		const dbLabel = getData(LABEL_TABLE, {
+			user_id,
+			private_code,
+			label
+		});
+
+		if (_.size(dbLabel) > 0) {
+			res.status(406).end();
+			return;
+		}
+
+		db.table(LABEL_TABLE)
+			.push({
+				id: uuid.v4(),
+				label,
+				user_id,
+				private_code,
+				active: true
+			})
+			.value();
+
+		res.status(200).end();
+	},
+	updateLabel(req, res) {
+		const {code, id, label, active: act} = req.body;
+		const user = getUserByPublicCode(code);
+		const {id: user_id, private_code} = user;
+
+		const active = _.toString(act) === 'true';
+		if (_.size(user) === 0 || _.size(id) === 0 || _.size(label) === 0 || !_.isBoolean(active)) {
+			res.status(406).end();
+			return;
+		}
+
+		const dbLabel = getData(LABEL_TABLE, {
+			user_id,
+			private_code,
+			id
+		});
+
+		if (_.size(dbLabel) === 0) {
+			res.status(406).end();
+			return;
+		}
+
+		db.table(LABEL_TABLE)
+			.find({id: dbLabel[0].id})
+			.assign({
+				label,
+				active
+			})
+			.value();
+
+		res.status(200).end();
+	},
+	loadLabels(req, res) {
+		const code = _.get(req.query, 'code', '');
+		const user = getUserByPublicCode(code);
+
+		if (_.size(user) === 0) {
+			res.status(406).end();
+			return;
+		}
+
+		const dbLabel = db.table(LABEL_TABLE)
+				.filter({user_id: user.id})
+				.map((label) => _.pick(label, ['id', 'label', 'active']))
+				.sortBy('category')
+				.value() || [];
+
+		res.send(dbLabel);
 	}
 };
