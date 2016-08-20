@@ -63,6 +63,13 @@ module.exports = {
 					label: "Etiqueta",
 					active: "Activa"
 				}
+			},
+			entries: {
+				add: 'Agregar',
+				add_new_title: 'Crear transacción',
+				add_update_title: 'Actualizar transacción',
+				update: 'Actualizar',
+				entry_date: 'Fecha de Ingreso'
 			}
 		},
 		menu: {
@@ -78,11 +85,13 @@ module.exports = {
 			june: "Junio",
 			july: "Julio",
 			august: "Agosto",
-			september: "Setiembre",
+			september: "Septiembre",
 			october: "Octubre",
 			november: "Noviembre",
 			december: "Diciembre"
-		}
+		},
+		calendar_days: ['Dom', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sab'],
+		calendar_months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 	},
 	en: {
 		header: {
@@ -148,7 +157,18 @@ module.exports = {
 					label: "Label",
 					active: "Active"
 				}
+			},
+			entries: {
+				add: 'Add',
+				add_new_title: 'Add a new transaction',
+				add_update_title: 'Update transaction',
+				update: 'Update',
+				entry_date: 'Entry Date'
 			}
+		},
+		menu: {
+			edit: 'Edit',
+			delete: "Delete"
 		},
 		months: {
 			january: "January",
@@ -164,9 +184,7 @@ module.exports = {
 			november: "November",
 			december: "December"
 		},
-		menu: {
-			edit: 'Edit',
-			delete: "Delete"
-		},
+		calendar_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+		calendar_months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 	}
 };
