@@ -1,10 +1,11 @@
 import React from 'react';
 import _ from 'lodash';
-import {Row, Col, Button, Glyphicon, Modal} from 'react-bootstrap';
-import {Combobox, DropdownList} from 'react-widgets';
+import {observer} from 'mobx-react';
+import {Row, Col, Button, Glyphicon, Modal, FormControl} from 'react-bootstrap';
+import {Combobox} from 'react-widgets';
 import DatePicker from 'react-bootstrap-date-picker';
 
-export default React.createClass({
+export default observer(['store'], React.createClass({
 	displayName: 'Add Entry',
 	getInitialState() {
 		var entryDate = new Date().toISOString();
@@ -13,12 +14,13 @@ export default React.createClass({
 			category: {},
 			label: {},
 			entryDate,
-			currency: ''
+			currency: '',
+			exchange: '',
+			amount: 0
 		};
 	},
 	propTypes: {
 		translation: React.PropTypes.object.isRequired,
-		currency: React.PropTypes.object.isRequired,
 		category: React.PropTypes.object.isRequired,
 		label: React.PropTypes.object.isRequired,
 		stage: React.PropTypes.oneOf(['new', 'update']).isRequired
@@ -27,6 +29,18 @@ export default React.createClass({
 		return {
 			stage: 'new'
 		};
+	},
+	componentWillMount() {
+		_.delay(() => {
+			const {currency, exchange} = this.props.currency;
+			if (_.size(this.state.exchange) === 0) {
+				this.setState({exchange});
+			}
+
+			if (_.size(this.state.currency.currency) === 0) {
+				this.setState({currency});
+			}
+		}, 1000);
 	},
 	open() {
 		this.setState({isWizardOpen: true});
@@ -49,7 +63,7 @@ export default React.createClass({
 			.map(({id, label}) => { return {id, label}; })
 			.value();
 
-		const currencies = [this.currency.currency, 'USD'];
+		const currencies = [this.props.currency.currency, 'USD'];
 
 		return (
 			<div className="add-container">
@@ -71,14 +85,24 @@ export default React.createClass({
 
 						<Row>
 							<Col md={2}/>
-							<Col md={8}>
+							<Col md={4}>
 								<span>{this.props.translation.t('settings.entries.entry_date')}</span>
 								<DatePicker
 									value={this.state.entryDate}
-									dateFormat="YYYY/MM/DD"
+									dateFormat="YYYY-MM-DD"
 									onChange={(entryDate) => this.setState({entryDate})}
 									monthLabels={this.props.translation.t('calendar_months')}
 									dayLabels={this.props.translation.t('calendar_days')}
+								/>
+							</Col>
+							<Col md={4}>
+								<span>{this.props.translation.t('settings.exchange.exchange')}</span>
+								<FormControl
+									type="number"
+									value={this.state.exchange}
+									placeholder={this.props.translation.t('settings.exchange.rate_place')}
+									onChange={(exchange) => this.setState({exchange})}
+									className="align-center"
 								/>
 							</Col>
 							<Col md={2}/>
@@ -88,14 +112,25 @@ export default React.createClass({
 							<Col md={2}/>
 							<Col md={4}>
 								<span>{this.props.translation.t('settings.exchange.currency')}</span>
-								<DropdownList
+								<Combobox
 									data={currencies}
-									defaultValue={_.get(currencies, '[0]', '')}
 									value={this.state.currency}
-									onChange={(currency) => this.setState({currency})}
+									onChange={(currency) => this.setState({currency: currency.target.value})}
+									suggest={true}
+									filter="contains"
+									className="align-center"
 								/>
 							</Col>
-							<Col md={4}/>
+							<Col md={4}>
+								<span>{this.props.translation.t('settings.entries.amount')}</span>
+								<FormControl
+									type="number"
+									value={this.state.amount}
+									placeholder={this.props.translation.t('settings.entries.amount_place')}
+									onChange={(amount) => this.setState({amount: amount.target.value})}
+									className="align-right"
+								/>
+							</Col>
 							<Col md={2}/>
 						</Row>
 
@@ -138,4 +173,4 @@ export default React.createClass({
 			</div>
 		);
 	}
-});
+}));

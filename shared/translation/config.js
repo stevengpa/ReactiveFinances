@@ -33,6 +33,7 @@ module.exports = {
 		},
 		settings: {
 			exchange: {
+				exchange: "Tipo de cambio",
 				rate: "Tipo de cambio (USD)",
 				rate_place: "Local -> USD",
 				rate_ok: "El tipo de cambio ha sido guardado",
@@ -69,7 +70,9 @@ module.exports = {
 				add_new_title: 'Crear transacción',
 				add_update_title: 'Actualizar transacción',
 				update: 'Actualizar',
-				entry_date: 'Fecha de Ingreso'
+				entry_date: 'Fecha de Ingreso',
+				amount: 'Monto',
+				amount_place: '1,000.00'
 			}
 		},
 		menu: {
@@ -127,6 +130,7 @@ module.exports = {
 		},
 		settings: {
 			exchange: {
+				exchange: "Exchange Rate",
 				rate: "Exchange Rate (USD)",
 				rate_place: "Local -> USD",
 				rate_ok: "The exchange rate was saved",
@@ -163,7 +167,9 @@ module.exports = {
 				add_new_title: 'Add a new transaction',
 				add_update_title: 'Update transaction',
 				update: 'Update',
-				entry_date: 'Entry Date'
+				entry_date: 'Entry Date',
+				amount: 'Amount',
+				amount_place: '1,000.00'
 			}
 		},
 		menu: {
