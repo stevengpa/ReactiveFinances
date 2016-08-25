@@ -13,6 +13,7 @@ export default observable({
 	currency: '',
 	exchange: 1,
 	code: _.get(auth, 'user.code', ''),
+	exchangeCurrency: 'USD',
 	// Computeds
 	isValidCurrency() {
 		return isLength(this.currency, 3) && !isNumber(this.currency);
@@ -47,6 +48,10 @@ export default observable({
 				const {currency, exchange} = data;
 				this.currency = currency || '';
 				this.exchange = exchange || 0;
+				return {
+					currency,
+					exchange: _.toNumber(exchange)
+				};
 			});
 	}),
 	saveExchange: action(function saveExchange() {

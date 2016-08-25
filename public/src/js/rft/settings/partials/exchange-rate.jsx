@@ -65,6 +65,7 @@ export default observer(function CurrExchange(props) {
 								value={props.currency.currency}
 								onChange={onCurrencyChange}
 								onKeyUp={saveCurrency}
+								maxLength={3}
 							/>
 						</FormGroup>
 					</Form>
@@ -87,6 +88,7 @@ export default observer(function CurrExchange(props) {
 								value={props.currency.exchange}
 								onChange={onExchangeRateChange}
 								onKeyUp={saveExchange}
+								maxLength={5}
 							/>
 						</FormGroup>
 					</Form>

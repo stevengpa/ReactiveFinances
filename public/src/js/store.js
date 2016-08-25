@@ -4,6 +4,7 @@ import login from './states/login';
 import signup from './states/signup';
 import auth from './states/auth';
 import settings from './states/settings';
+import entry from './states/entry';
 
 export default {
 	translation,
@@ -11,5 +12,6 @@ export default {
 	login,
 	signup,
 	auth,
-	settings
+	settings,
+	entry
 };

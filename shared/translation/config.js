@@ -72,12 +72,15 @@ module.exports = {
 				update: 'Actualizar',
 				entry_date: 'Fecha de Ingreso',
 				amount: 'Monto',
-				amount_place: '1,000.00'
+				amount_place: '1,000.00',
+				description: 'Descripción'
 			}
 		},
-		menu: {
+		actions: {
 			edit: 'Editar',
-			delete: "Eliminar"
+			delete: "Eliminar",
+			save: 'Guardar',
+			update: 'Actualizar'
 		},
 		months: {
 			january: "Enero",
@@ -169,12 +172,15 @@ module.exports = {
 				update: 'Update',
 				entry_date: 'Entry Date',
 				amount: 'Amount',
-				amount_place: '1,000.00'
+				amount_place: '1,000.00',
+				description: 'Description'
 			}
 		},
-		menu: {
+		actions: {
 			edit: 'Edit',
-			delete: "Delete"
+			delete: "Delete",
+			save: 'Save',
+			update: 'Update'
 		},
 		months: {
 			january: "January",

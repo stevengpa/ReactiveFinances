@@ -86,6 +86,7 @@ export default observer(function Category(props) {
 								value={props.category.category}
 								onChange={onCategoryChange}
 								onKeyUp={saveCategory}
+								maxLength={50}
 							/>
 						</FormGroup>
 					</Form>

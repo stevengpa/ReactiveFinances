@@ -24,6 +24,64 @@
   }
 }
 
+.rft-input-group {
+
+  &:focus {
+    outline: 0;
+  }
+
+  .form-control {
+    border: 0;
+    border-bottom: 0.1rem solid $color-blue-03;
+    border-radius: 0;
+
+    &:focus {
+      border-bottom: 0.1rem solid $color-emerald;
+      outline: 0;
+    }
+  }
+  .input-group-addon {
+    background-color: transparent;
+    border: 0;
+  }
+
+  .rw-combobox {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background-color: transparent;
+
+    &:active {
+      box-shadow: none;
+      border: 0;
+    }
+  }
+
+  .rw-input{
+    border-bottom: 0.1rem solid $color-blue-03;
+    border-radius: 0;
+    height: 45px;
+    box-shadow: none !important;
+
+    &:focus {
+      border-bottom: 0.1rem solid $color-emerald;
+      outline: 0;
+      box-shadow: none;
+    }
+  }
+
+  .rw-select, .rw-popup-container, .rw-open, .rw-state-focus {
+    box-shadow: none;
+    border: 0;
+    outline: 0;
+
+    &:focus, &:hover, &:active {
+      outline: 0;
+      box-shadow: none;
+    }
+  }
+}
+
 .rft-input-error {
   border: 0;
   border-bottom: 0.1rem solid $color-red-01;

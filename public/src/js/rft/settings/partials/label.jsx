@@ -86,6 +86,7 @@ export default observer(function Label(props) {
 								value={props.label.label}
 								onChange={onLabelChange}
 								onKeyUp={saveLabel}
+								maxLength={50}
 							/>
 						</FormGroup>
 					</Form>

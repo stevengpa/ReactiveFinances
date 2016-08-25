@@ -19,5 +19,28 @@
   .add-icon {
     font-size: 20px;
   }
+}
+
+.add-modal-container {
+
+  .body-entry-container {
+    .row {
+      margin-top: 8px;
+    }
+
+    span {
+      letter-spacing: 0.5px;
+      color: $color-gray-02;
+    }
+  }
+
+  .modal-title {
+    text-align: center;
+  }
+
+  .btn-action {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
 
 }

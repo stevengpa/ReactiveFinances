@@ -8,21 +8,11 @@ import DatePicker from 'react-bootstrap-date-picker';
 export default observer(['store'], React.createClass({
 	displayName: 'Add Entry',
 	getInitialState() {
-		var entryDate = new Date().toISOString();
 		return {
-			isWizardOpen: false,
-			category: {},
-			label: {},
-			entryDate,
-			currency: '',
-			exchange: '',
-			amount: 0
+			isWizardOpen: false
 		};
 	},
 	propTypes: {
-		translation: React.PropTypes.object.isRequired,
-		category: React.PropTypes.object.isRequired,
-		label: React.PropTypes.object.isRequired,
 		stage: React.PropTypes.oneOf(['new', 'update']).isRequired
 	},
 	getDefaultProps() {
@@ -31,16 +21,20 @@ export default observer(['store'], React.createClass({
 		};
 	},
 	componentWillMount() {
-		_.delay(() => {
-			const {currency, exchange} = this.props.currency;
-			if (_.size(this.state.exchange) === 0) {
-				this.setState({exchange});
-			}
+		this.translation = this.props.store.translation;
+		this.currency = this.props.store.settings.currency;
+		this.category = this.props.store.settings.category;
+		this.label = this.props.store.settings.label;
+		this.entry = this.props.store.entry;
 
-			if (_.size(this.state.currency.currency) === 0) {
-				this.setState({currency});
-			}
-		}, 1000);
+		this.currency.loadCurrency()
+			.then(({currency, exchange}) => {
+				this.entry.currency = currency;
+				this.entry.exchange = _.toNumber(exchange);
+			});
+
+		this.category.loadCategories();
+		this.label.loadLabels();
 	},
 	open() {
 		this.setState({isWizardOpen: true});
@@ -50,20 +44,24 @@ export default observer(['store'], React.createClass({
 	},
 	render() {
 		const title = this.props.stage === 'new' ?
-			this.props.translation.t('settings.entries.add_new_title') :
-			this.props.translation.t('settings.entries.add_update_title');
+			this.translation.t('settings.entries.add_new_title') :
+			this.translation.t('settings.entries.add_update_title');
 
-		const formatCategories = _.chain(this.props.category.categories.toJS())
+		const actionText = this.props.stage === 'new' ?
+			this.translation.t('actions.save') :
+			this.translation.t('actions.update');
+
+		const formatCategories = _.chain(this.category.categories.toJS())
 			.filter({active: true})
 			.map(({id, category}) => { return {id, category}; })
 			.value();
 
-		const formatLabel = _.chain(this.props.label.labels.toJS())
+		const formatLabel = _.chain(this.label.labels.toJS())
 			.filter({active: true})
 			.map(({id, label}) => { return {id, label}; })
 			.value();
 
-		const currencies = [this.props.currency.currency, 'USD'];
+		const currencies = [this.currency.currency, this.currency.exchangeCurrency];
 
 		return (
 			<div className="add-container">
@@ -75,34 +73,38 @@ export default observer(['store'], React.createClass({
 					<Glyphicon className="add-icon" glyph="plus"/>
 				</Button>
 
-				<Modal show={this.state.isWizardOpen} onHide={this.close}>
+				<Modal
+					show={this.state.isWizardOpen}
+					onHide={this.close}
+					className="add-modal-container"
+				>
 
 					<Modal.Header closeButton>
 						<Modal.Title>{title}</Modal.Title>
 					</Modal.Header>
 
-					<Modal.Body>
+					<Modal.Body className="body-entry-container">
 
 						<Row>
 							<Col md={2}/>
-							<Col md={4}>
-								<span>{this.props.translation.t('settings.entries.entry_date')}</span>
+							<Col md={4} className="rft-input-group">
 								<DatePicker
-									value={this.state.entryDate}
+									value={this.entry.entryDate}
 									dateFormat="YYYY-MM-DD"
-									onChange={(entryDate) => this.setState({entryDate})}
-									monthLabels={this.props.translation.t('calendar_months')}
-									dayLabels={this.props.translation.t('calendar_days')}
+									onChange={(entryDate) => this.entry.entryDate = entryDate}
+									monthLabels={this.translation.t('calendar_months')}
+									dayLabels={this.translation.t('calendar_days')}
+									placeholder={this.translation.t('settings.entries.entry_date')}
 								/>
 							</Col>
 							<Col md={4}>
-								<span>{this.props.translation.t('settings.exchange.exchange')}</span>
 								<FormControl
 									type="number"
-									value={this.state.exchange}
-									placeholder={this.props.translation.t('settings.exchange.rate_place')}
-									onChange={(exchange) => this.setState({exchange})}
-									className="align-center"
+									value={this.entry.exchange}
+									placeholder={this.translation.t('settings.exchange.rate_place')}
+									onChange={(exchange) => this.entry.exchange = _.toNumber(exchange.target.value)}
+									className="align-center rft-input"
+									maxLength={20}
 								/>
 							</Col>
 							<Col md={2}/>
@@ -110,25 +112,26 @@ export default observer(['store'], React.createClass({
 
 						<Row>
 							<Col md={2}/>
-							<Col md={4}>
-								<span>{this.props.translation.t('settings.exchange.currency')}</span>
+							<Col md={4} className="rft-input-group">
 								<Combobox
 									data={currencies}
-									value={this.state.currency}
-									onChange={(currency) => this.setState({currency: currency.target.value})}
+									defaultValue={this.entry.currency}
+									onChange={(currency) => this.entry.currency = currency}
 									suggest={true}
 									filter="contains"
 									className="align-center"
+									placeholder={this.translation.t('settings.exchange.currency')}
+									maxLength={3}
 								/>
 							</Col>
 							<Col md={4}>
-								<span>{this.props.translation.t('settings.entries.amount')}</span>
 								<FormControl
 									type="number"
-									value={this.state.amount}
-									placeholder={this.props.translation.t('settings.entries.amount_place')}
-									onChange={(amount) => this.setState({amount: amount.target.value})}
-									className="align-right"
+									value={this.entry.amount}
+									placeholder={this.translation.t('settings.entries.amount_place')}
+									onChange={(amount) => this.entry.amount = _.toNumber(amount.target.value)}
+									className="align-right rft-input"
+									maxLength={20}
 								/>
 							</Col>
 							<Col md={2}/>
@@ -136,14 +139,33 @@ export default observer(['store'], React.createClass({
 
 						<Row>
 							<Col md={2}/>
-							<Col md={8}>
-								<span>{this.props.translation.t('settings.category.category')}</span>
+							<Col md={8} className="rft-input-group">
 								<Combobox
-									valueField='id' textField='category'
-									onChange={(category) => this.setState({category})}
+									valueField="id"
+									textField="category"
+									onChange={(category) => this.entry.category = category}
 									data={formatCategories}
 									suggest={true}
 									filter="contains"
+									placeholder={this.translation.t('settings.category.category')}
+									maxLength={100}
+								/>
+							</Col>
+							<Col md={2}/>
+						</Row>
+
+						<Row>
+							<Col md={2}/>
+							<Col md={8} className="rft-input-group">
+								<Combobox
+									valueField="id"
+									textField="label"
+									onChange={(label) => this.entry.label = label}
+									data={formatLabel}
+									suggest={true}
+									filter="contains"
+									placeholder={this.translation.t('settings.label.label')}
+									maxLength={100}
 								/>
 							</Col>
 							<Col md={2}/>
@@ -152,23 +174,47 @@ export default observer(['store'], React.createClass({
 						<Row>
 							<Col md={2}/>
 							<Col md={8}>
-								<span>{this.props.translation.t('settings.label.label')}</span>
-								<Combobox
-									valueField='id' textField='label'
-									onChange={(label) => this.setState({label})}
-									data={formatLabel}
-									suggest={true}
-									filter="contains"
+								<FormControl
+									type="text"
+									value={`${this.entry.amountUSD} ${this.currency.exchangeCurrency}`}
+									className="align-right rft-input"
+									disabled={true}
+									placeholder={`${this.translation.t('settings.exchange.exchange')} => ${this.currency.exchangeCurrency}`}
 								/>
 							</Col>
 							<Col md={2}/>
 						</Row>
 
+						<Row>
+							<Col md={2}/>
+							<Col md={8}>
+								<FormControl
+									type="text"
+									value={this.entry.description}
+									onChange={(description) => this.entry.description = description.target.value}
+									className="align-left rft-input"
+									placeholder={this.translation.t('settings.entries.description')}
+									maxLength={250}
+								/>
+							</Col>
+							<Col md={2}/>
+						</Row>
+
+						<Row>
+							<Col md={2}/>
+							<Col md={8}>
+								<Button
+									block={true}
+									bsStyle="success"
+									className="btn-action"
+								>
+									{actionText}
+								</Button>
+							</Col>
+							<Col md={2}/>
+						</Row>
 					</Modal.Body>
 
-					<Modal.Footer>
-						<Button onClick={this.close}>Close</Button>
-					</Modal.Footer>
 				</Modal>
 			</div>
 		);
