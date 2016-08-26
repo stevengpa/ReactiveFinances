@@ -57,7 +57,7 @@
     }
   }
 
-  .rw-input{
+  .rw-input {
     border-bottom: 0.1rem solid $color-blue-03;
     border-radius: 0;
     height: 45px;
@@ -74,6 +74,8 @@
     box-shadow: none;
     border: 0;
     outline: 0;
+    border-bottom: 0.1rem solid $color-white;
+    border-radius: 0;
 
     &:focus, &:hover, &:active {
       outline: 0;

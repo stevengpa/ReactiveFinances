@@ -5,5 +5,11 @@ module.exports = {
 		return _.chain(value)
 			.isNumber()
 			.value();
+	},
+	cleanString(value) {
+		return _.chain(value)
+			.trim()
+			.escape()
+			.value();
 	}
 };

@@ -266,7 +266,7 @@ module.exports = {
 		const dbLabel = db.table(LABEL_TABLE)
 				.filter({user_id: user.id})
 				.map((label) => _.pick(label, ['id', 'label', 'active']))
-				.sortBy('category')
+				.sortBy('label')
 				.value() || [];
 
 		res.send(dbLabel);

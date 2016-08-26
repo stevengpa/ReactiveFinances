@@ -1,6 +1,8 @@
 import {observable, action} from 'mobx';
 import _ from 'lodash';
 
+import {cleanString} from '../../../../shared/validations';
+
 import constants from '../shared/constants';
 import auth from '../states/auth';
 
@@ -13,7 +15,7 @@ export default observable({
 	code: _.get(auth, 'user.code', ''),
 	// Computeds
 	isValidLabel() {
-		return !_.isEmpty(this.label);
+		return !_.isEmpty(cleanString(this.label));
 	},
 	// Actions
 	saveLabel: action(function saveLabel(label = this.label) {
@@ -22,8 +24,8 @@ export default observable({
 				method: 'POST',
 				url:'/api/settings/label',
 				data: {
-					label,
-					code: this.code
+					label: cleanString(label),
+					code: cleanString(this.code)
 				}
 			});
 		} else {
@@ -36,10 +38,10 @@ export default observable({
 				method: 'PUT',
 				url:'/api/settings/label',
 				data: {
-					id,
-					label,
+					id: cleanString(id),
+					label: cleanString(label),
 					active: _.toString(active) === 'true',
-					code: this.code
+					code: cleanString(this.code)
 				}
 			});
 		} else {
@@ -51,7 +53,7 @@ export default observable({
 			method: 'GET',
 			url: '/api/settings/label',
 			params: {
-				code: this.code
+				code: cleanString(this.code)
 			}
 		})
 			.then(({data}) => {

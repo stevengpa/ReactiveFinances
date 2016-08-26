@@ -1,7 +1,7 @@
 import {observable, action} from 'mobx';
 import _ from 'lodash';
 import {isLength} from 'validator';
-import {isNumber} from '../../../../shared/validations';
+import {isNumber, cleanString} from '../../../../shared/validations';
 
 import constants from '../shared/constants';
 import auth from '../states/auth';
@@ -16,7 +16,7 @@ export default observable({
 	exchangeCurrency: 'USD',
 	// Computeds
 	isValidCurrency() {
-		return isLength(this.currency, 3) && !isNumber(this.currency);
+		return isLength(cleanString(this.currency), 3) && !isNumber(cleanString(this.currency));
 	},
 	isValidExchange() {
 		return isNumber(this.exchange) && _.gt(this.exchange, 0);
@@ -28,8 +28,8 @@ export default observable({
 				method: 'POST',
 				url:'/api/settings/currency',
 				data: {
-					currency: this.currency,
-					code: this.code
+					currency: cleanString(this.currency),
+					code: cleanString(this.code)
 				}
 			});
 		} else {
@@ -41,15 +41,15 @@ export default observable({
 			method: 'GET',
 			url: '/api/settings/currency',
 			params: {
-				code: this.code
+				code: cleanString(this.code)
 			}
 		})
 			.then(({data}) => {
 				const {currency, exchange} = data;
-				this.currency = currency || '';
+				this.currency = cleanString(currency) || '';
 				this.exchange = exchange || 0;
 				return {
-					currency,
+					currency: cleanString(currency),
 					exchange: _.toNumber(exchange)
 				};
 			});
@@ -61,7 +61,7 @@ export default observable({
 				url:'/api/settings/exchange',
 				data: {
 					exchange: this.exchange,
-					code: this.code
+					code: cleanString(this.code)
 				}
 			});
 		} else {

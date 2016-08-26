@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import constants from '../shared/constants';
 import auth from '../states/auth';
+import {cleanString} from '../../../../shared/validations';
 
 import q from '../q';
 
@@ -13,7 +14,7 @@ export default observable({
 	code: _.get(auth, 'user.code', ''),
 	// Computeds
 	isValidCategory() {
-		return !_.isEmpty(this.category);
+		return !_.isEmpty(cleanString(this.category));
 	},
 	// Actions
 	saveCategory: action(function saveCategory() {
@@ -22,8 +23,8 @@ export default observable({
 				method: 'POST',
 				url:'/api/settings/category',
 				data: {
-					category: this.category,
-					code: this.code
+					category: cleanString(this.category),
+					code: cleanString(this.code)
 				}
 			});
 		} else {
@@ -36,10 +37,10 @@ export default observable({
 				method: 'PUT',
 				url:'/api/settings/category',
 				data: {
-					id,
-					category,
+					id: cleanString(id),
+					category: cleanString(category),
 					active: _.toString(active) === 'true',
-					code: this.code
+					code: cleanString(this.code)
 				}
 			});
 		} else {
@@ -51,7 +52,7 @@ export default observable({
 			method: 'GET',
 			url: '/api/settings/category',
 			params: {
-				code: this.code
+				code: cleanString(this.code)
 			}
 		})
 			.then(({data}) => {

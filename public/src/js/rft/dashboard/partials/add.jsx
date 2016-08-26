@@ -176,10 +176,10 @@ export default observer(['store'], React.createClass({
 							<Col md={8}>
 								<FormControl
 									type="text"
-									value={`${this.entry.amountUSD} ${this.currency.exchangeCurrency}`}
-									className="align-right rft-input"
+									value={this.entry.exchangeAmount}
+									className="align-right rft-input exchange-rate"
 									disabled={true}
-									placeholder={`${this.translation.t('settings.exchange.exchange')} => ${this.currency.exchangeCurrency}`}
+									placeholder={`${this.translation.t('settings.exchange.exchange')} => ${this.entry.exchangeCurrency}`}
 								/>
 							</Col>
 							<Col md={2}/>
@@ -207,6 +207,7 @@ export default observer(['store'], React.createClass({
 									block={true}
 									bsStyle="success"
 									className="btn-action"
+									disabled={!this.entry.isValid}
 								>
 									{actionText}
 								</Button>
