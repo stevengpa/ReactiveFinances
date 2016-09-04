@@ -17,4 +17,6 @@ router.post('/label', settings.saveLabel);
 router.put('/label', settings.updateLabel);
 router.get('/label', settings.loadLabels);
 
+router.post('/entry', settings.saveEntry);
+
 module.exports = router;

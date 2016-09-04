@@ -1,21 +1,19 @@
 const _ = require('lodash');
-const {isLength} = require('validator');
-const {isNumber} = require('../../shared/validations');
+const moment = require('moment');
 const uuid = require('uuid');
+const {isLength} = require('validator');
+
+const {isNumber} = require('../../shared/validations');
 
 const db = require('../utils/db');
+const {getData} = db;
+const {CURRENCY_TABLE, CATEGORY_TABLE, LABEL_TABLE, ENTRY_TABLE} = db.tables;
+
 const {getUserByPublicCode} = require('../utils/authentication');
 
-const CODE_LEN = 36;
-const CURRENCY_TABLE = 'currency';
-const CATEGORY_TABLE = 'category';
-const LABEL_TABLE = 'label';
+const {valEntry} = require('../../shared/validations/entry');
 
-function getData(table, filters) {
-	return db.table(table)
-		.filter(filters)
-		.value();
-}
+const CODE_LEN = 36;
 
 module.exports = {
 	// ======================= >> CURRENCY << =======================
@@ -36,7 +34,7 @@ module.exports = {
 
 			db.table(CURRENCY_TABLE)
 				.find({id: localCurrency.id})
-				.assign({currency})
+				.assign({currency, update_date_time: new Date().toISOString()})
 				.value();
 
 		} else {
@@ -46,7 +44,8 @@ module.exports = {
 					id: uuid.v4(),
 					currency,
 					user_id: userId,
-					private_code
+					private_code,
+					entry_date_time: new Date().toISOString()
 				})
 				.value();
 		}
@@ -88,7 +87,7 @@ module.exports = {
 
 			db.table(CURRENCY_TABLE)
 				.find({id: localCurrency.id})
-				.assign({exchange})
+				.assign({exchange, update_date_time: new Date().toISOString()})
 				.value();
 
 		} else {
@@ -98,7 +97,8 @@ module.exports = {
 					id: uuid.v4(),
 					exchange,
 					user_id: userId,
-					private_code
+					private_code,
+					entry_date_time: new Date().toISOString()
 				})
 				.value();
 		}
@@ -133,7 +133,8 @@ module.exports = {
 				category,
 				user_id,
 				private_code,
-				active: true
+				active: true,
+				entry_date_time: new Date().toISOString()
 			})
 			.value();
 
@@ -165,7 +166,8 @@ module.exports = {
 			.find({id: dbCategory[0].id})
 			.assign({
 				category,
-				active
+				active,
+				update_date_time: new Date().toISOString()
 			})
 			.value();
 
@@ -216,7 +218,8 @@ module.exports = {
 				label,
 				user_id,
 				private_code,
-				active: true
+				active: true,
+				entry_date_time: new Date().toISOString()
 			})
 			.value();
 
@@ -248,7 +251,8 @@ module.exports = {
 			.find({id: dbLabel[0].id})
 			.assign({
 				label,
-				active
+				active,
+				update_date_time: new Date().toISOString()
 			})
 			.value();
 
@@ -270,5 +274,48 @@ module.exports = {
 				.value() || [];
 
 		res.send(dbLabel);
+	},
+	// ======================= >> ENTRIES << =======================
+	saveEntry(req, res) {
+		if (!valEntry(req.body)) {
+			res.status(406).end();
+			return;
+		}
+
+		const {currency, exchange, amount, entryDate: entry_date, category, label, description, code,
+			amountUSD: amount_usd, amountLC: amount_lc, exchangeCurrency: exchange_currency,
+			exchangeAmount: exchange_amount} = req.body;
+
+		const user = getUserByPublicCode(code);
+		if (_.size(user) === 0) {
+			res.status(406).end();
+			return;
+		}
+
+		const {id: userId, private_code} = user;
+
+		db.table(ENTRY_TABLE)
+			.push({
+				id: uuid.v4(),
+				currency,
+				exchange,
+				amount,
+				entry_date,
+				category,
+				label,
+				description,
+				amount_usd,
+				amount_lc,
+				exchange_currency,
+				exchange_amount,
+				month: moment(entry_date, 'YYYY-MM-DD').get('month') + 1,
+				year: moment(entry_date, 'YYYY-MM-DD').get('year'),
+				user_id: userId,
+				private_code,
+				entry_date_time: new Date().toISOString()
+			})
+			.value();
+
+		res.status(200).end();
 	}
 };

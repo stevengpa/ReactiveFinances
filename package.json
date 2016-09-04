@@ -31,6 +31,7 @@
     "method-override": "^2.3.6",
     "mobx": "^2.4.4",
     "mobx-react": "^3.5.5",
+    "moment": "^2.14.1",
     "morgan": "^1.7.0",
     "nodemailer": "^2.5.0",
     "numeral": "^1.5.3",
@@ -66,6 +67,7 @@
     "gulp-size": "^2.1.0",
     "gulp-uglify": "^1.5.4",
     "mobx-react-devtools": "^4.2.4",
+    "nodemon": "^1.10.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }

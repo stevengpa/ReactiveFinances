@@ -19,12 +19,26 @@ db
 		users: [],
 		currency: [],
 		category: [],
-		label: []
+		label: [],
+		entries: [],
+		filters: []
 	})
 	.value();
 
 module.exports = {
 	table(schema) {
 		return db.get(schema);
+	},
+	getData(table, filters) {
+		return db.get(table)
+			.filter(filters)
+			.value();
+	},
+	tables: {
+		CURRENCY_TABLE: 'currency',
+		CATEGORY_TABLE: 'category',
+		LABEL_TABLE: 'label',
+		ENTRY_TABLE: 'entries',
+		FIILTER_TABLE: 'filters'
 	}
 };

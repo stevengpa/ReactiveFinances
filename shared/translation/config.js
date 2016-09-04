@@ -73,7 +73,10 @@ module.exports = {
 				entry_date: 'Fecha de Ingreso',
 				amount: 'Monto',
 				amount_place: '1,000.00',
-				description: 'Descripción'
+				description: 'Descripción',
+				entry_ok: "La transacción ha sido guardada",
+				entry_error: "La transacción contiene uno o varios valores incorrectos",
+				entry_update_ok: "La transacción fue actualizada"
 			}
 		},
 		actions: {
@@ -173,7 +176,10 @@ module.exports = {
 				entry_date: 'Entry Date',
 				amount: 'Amount',
 				amount_place: '1,000.00',
-				description: 'Description'
+				description: 'Description',
+				entry_ok: "The transaction was saved",
+				entry_error: "Wrong transaction value(s)",
+				entry_update_ok: "The transaction was updated"
 			}
 		},
 		actions: {

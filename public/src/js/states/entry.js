@@ -1,8 +1,12 @@
-import {observable} from 'mobx';
+import {observable, action} from 'mobx';
 import _ from 'lodash';
 import numeral from 'numeral';
 
-//import {cleanString} from '../../../../shared/validations';
+import q from '../q';
+import constants from '../shared/constants';
+
+import {cleanString} from '../../../../shared/validations';
+import {valEntry} from '../../../../shared/validations/entry';
 
 import auth from '../states/auth';
 import storeCurrency from './currency';
@@ -56,47 +60,45 @@ export default observable({
 			`0 ${this.exchangeCurrency}`;
 	},
 	isValid() {
-		// Validate Currency
-		if ( _.isEmpty(this.currency) ||
-			this.currency !== storeCurrency.exchangeCurrency && this.currency !== EXCHANGE_CURR) {
-			alert('Currency');
-			return false;
+		return valEntry({
+			currency: cleanString(this.currency),
+			exchange: this.exchange,
+			amount: this.amount,
+			entryDate: this.entryDate,
+			category: this.category,
+			label: this.label
+		});
+	},
+	// Actions
+	saveEntry: action(function saveEntry() {
+		if (this.isValid) {
+			return q({
+				method: 'POST',
+				url:'/api/settings/entry',
+				data: {
+					currency: cleanString(this.currency),
+					exchange: this.exchange,
+					amount: this.amount,
+					entryDate: this.entryDate,
+					category: this.category,
+					label: this.label,
+					description: cleanString(this.description),
+					amountUSD: this.amountUSD,
+					amountLC: this.amountLC,
+					exchangeCurrency: this.exchangeCurrency,
+					exchangeAmount: this.exchangeAmount,
+					code: cleanString(this.code)
+				}
+			});
+		} else {
+			return Promise.reject(constants.VALIDATION_ERROR);
 		}
-		// Validate Exchange
-		if (!_.isNumber(this.exchange) ||
-			!_.gt(this.exchange, 0)) {
-			alert('Exchange');
-			return false;
-		}
-		// Validate Amount
-		if (!_.isNumber(this.amount) ||
-			!_.gt(this.amount, 0)) {
-			alert('Amount');
-			return false;
-		}
-		// Validate Date
-		if (_.isEmpty(this.isDate) ||
-			!_.isDate(this.isDate)) {
-			alert('Date');
-			return false;
-		}
-		// Validate Category
-		console.log('=========  this.category  =========');
-		console.log(this.category);
-		console.log('=====  End of this.category>  =====');
-		if (_.isEmpty(this.category) ||
-			!_.has(this.category, ['id', 'category'])) {
-			return false;
-		}
-		// Validate Label
-		console.log('=========  this.label  =========');
-		console.log(this.label);
-		console.log('=====  End of this.label>  =====');
-		if (_.isEmpty(this.label) ||
-			!_.has(this.label, ['id', 'label'])) {
-			return false;
-		}
-
-		return true;
-	}
+	}),
+	clean: action(function clean() {
+		this.category = {};
+		this.label = {};
+		this.entryDate = new Date().toISOString();
+		this.amount = 0;
+		this.description = '';
+	})
 });

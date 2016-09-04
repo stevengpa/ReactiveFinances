@@ -2,6 +2,8 @@
   "verbose": true,
   "ignore": [
     "./db",
-    "./public"
+    "./public",
+    "public",
+    "db"
   ]
 }

@@ -44,6 +44,9 @@ app.use('/', signupRouter);
 const settingsRouter = require('./private/router/settings');
 app.use('/api/settings', settingsRouter);
 
+const filtersRouter = require('./private/router/filters');
+app.use('/api/filters', filtersRouter);
+
 const loginRouter = require('./private/router/login');
 app.use('/', authenticate, loginRouter);
 

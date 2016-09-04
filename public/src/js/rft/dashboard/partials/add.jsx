@@ -1,9 +1,13 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import {observer} from 'mobx-react';
 import {Row, Col, Button, Glyphicon, Modal, FormControl} from 'react-bootstrap';
 import {Combobox} from 'react-widgets';
 import DatePicker from 'react-bootstrap-date-picker';
+import moment from 'moment';
+
+import Notify from '../../../shared/notify';
 
 export default observer(['store'], React.createClass({
 	displayName: 'Add Entry',
@@ -41,6 +45,25 @@ export default observer(['store'], React.createClass({
 	},
 	close() {
 		this.setState({isWizardOpen: false});
+	},
+	setEntryDate(entryDate) {
+		if (moment(entryDate, 'YYYY-MM-DD').isValid()) {
+			this.entry.entryDate = new Date(entryDate).toISOString();
+		} else {
+			this.entry.entryDate = new Date().toISOString();
+		}
+	},
+	saveEntry() {
+		this.entry.saveEntry()
+			.then(() => {
+				Notify(this.translation.t('settings.entries.entry_ok'), 'success');
+				this.entry.clean();
+				//this.entry.loadeEntries();
+			})
+			.catch(() => {
+				Notify(this.translation.t('settings.entries.entry_error'), 'error');
+				//this.entry.loadeEntries();
+			});
 	},
 	render() {
 		const title = this.props.stage === 'new' ?
@@ -91,7 +114,8 @@ export default observer(['store'], React.createClass({
 								<DatePicker
 									value={this.entry.entryDate}
 									dateFormat="YYYY-MM-DD"
-									onChange={(entryDate) => this.entry.entryDate = entryDate}
+									onChange={(entryDate) => this.setEntryDate(entryDate)}
+									onBlur={(entryDate) => this.setEntryDate(`${_.get(entryDate, 'target.value')}${'T18:08:00.000Z'}`)}
 									monthLabels={this.translation.t('calendar_months')}
 									dayLabels={this.translation.t('calendar_days')}
 									placeholder={this.translation.t('settings.entries.entry_date')}
@@ -208,6 +232,7 @@ export default observer(['store'], React.createClass({
 									bsStyle="success"
 									className="btn-action"
 									disabled={!this.entry.isValid}
+									onClick={() => this.saveEntry()}
 								>
 									{actionText}
 								</Button>
