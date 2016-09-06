@@ -11,7 +11,7 @@ const {valFilter} = require('../../shared/validations/filter');
 
 module.exports = {
 	saveFilter(req, res) {
-		const {code, value, field, category, path} = req.body;
+		const {id, code, value, field, category} = req.body;
 
 		const user = getUserByPublicCode(code);
 		if (_.size(user) === 0) {
@@ -19,7 +19,7 @@ module.exports = {
 			return;
 		}
 
-		if (valFilter({value, field, category, path})) {
+		if (valFilter({value, field, category})) {
 			res.status(406).end();
 			return;
 		}
@@ -34,22 +34,26 @@ module.exports = {
 		});
 
 		if (_.size(dbFilters) > 0) {
-			res.status(406).end();
-			return;
+			db.table(FILTER_TABLE)
+				.remove({
+					id,
+					user_id,
+					private_code
+				})
+				.value();
+		} else {
+			db.table(FILTER_TABLE)
+				.push({
+					id: uuid.v4(),
+					user_id,
+					private_code,
+					value,
+					field,
+					category,
+					entry_date_time: new Date().toISOString()
+				})
+				.value();
 		}
-
-		db.table(FILTER_TABLE)
-			.push({
-				id: uuid.v4(),
-				user_id,
-				private_code,
-				value,
-				field,
-				category,
-				path,
-				entry_date_time: new Date().toISOString()
-			})
-			.value();
 
 		res.status(200).end();
 	},
@@ -95,7 +99,7 @@ module.exports = {
 
 		const dbFilter = db.table(FILTER_TABLE)
 				.filter({user_id: user.id})
-				.map((filter) => _.pick(filter, ['id', 'value', 'field', 'category', 'path']))
+				.map((filter) => _.pick(filter, ['id', 'value', 'field', 'category']))
 				.sortBy('value')
 				.value() || [];
 
@@ -119,33 +123,31 @@ module.exports = {
 							return memo.push({
 								value: item,
 								field: item,
-								category: 'Currency',
-								path: 'currency'
+								category: 'currency'
 							});
 						} else if (key === 'category') {
 							return memo.push({
 								value: item.id,
 								field: item.category,
-								category: 'Category',
-								path: 'category'
+								category: 'category'
 							});
 						} else if (key === 'label') {
 							return memo.push({
 								value: item.id,
 								field: item.label,
-								category: 'Label',
-								path: 'label'
+								category: 'label'
 							});
 						}
 					});
 
 					memo.push(fields);
-					memo.push({
-						value: `${entry.month}-${entry.year}`,
-						field: `${entry.month}-${entry.year}`,
-						category: 'Date',
-						path: 'date'
-					});
+					if (entry.month && entry.year) {
+						memo.push({
+							value: `${entry.month}-${entry.year}`,
+							field: `${entry.month}-${entry.year}`,
+							category: 'date'
+						});
+					}
 
 					return memo;
 

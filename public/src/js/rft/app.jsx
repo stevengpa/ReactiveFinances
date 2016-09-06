@@ -3,6 +3,7 @@ import {observer} from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 
 import Header from './header';
+import Filter from './filters';
 
 export default observer(['store'], React.createClass({
 	componentWillMount() {
@@ -14,6 +15,7 @@ export default observer(['store'], React.createClass({
 			<div>
 				<DevTools/>
 				<Header/>
+				<Filter/>
 				<div className="app-container">
 					{this.props.children}
 				</div>

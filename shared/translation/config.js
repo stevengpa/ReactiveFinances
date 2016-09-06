@@ -100,7 +100,13 @@ module.exports = {
 			december: "Diciembre"
 		},
 		calendar_days: ['Dom', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sab'],
-		calendar_months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+		calendar_months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+		filters: {
+			currency: "Moneda",
+			category: "Categoría",
+			label: "Etiqueta",
+			date: "Fecha"
+		}
 	},
 	en: {
 		header: {
@@ -203,6 +209,12 @@ module.exports = {
 			december: "December"
 		},
 		calendar_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-		calendar_months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+		calendar_months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		filters: {
+			currency: "Currency",
+			category: "Category",
+			label: "Label",
+			date: "Date"
+		}
 	}
 };
