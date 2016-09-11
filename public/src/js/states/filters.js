@@ -11,7 +11,7 @@ import auth from '../states/auth';
 
 export default observable({
 	// Observables
-	filters: [],
+	selectedFilters: [],
 	fields: [],
 	filter: {},
 	code: _.get(auth, 'user.code', ''),
@@ -23,16 +23,25 @@ export default observable({
 		});
 	},
 	// Actions
-	saveFilter: action(function saveFilter(filter = this.filter) {
-		const {value, field, category} = filter;
+	toggleFilter: action(function toggleFilter(filter = this.filter) {
+		const {action, value, field, category} = filter;
+		this.filter = {
+			action,
+			value,
+			field,
+			category
+		};
+
 		if (this.isValid) {
 			return q({
 				method: 'POST',
 				url:'/api/filters/filter',
 				data: {
+					code: cleanString(this.code),
 					value: cleanString(value),
 					field: cleanString(field),
-					category: cleanString(category)
+					category: cleanString(category),
+					action: cleanString(action)
 				}
 			});
 		} else {
@@ -47,10 +56,14 @@ export default observable({
 				code: cleanString(this.code)
 			}
 		})
-		.then(({data}) => this.fields = data)
+		.then(({data}) => {
+			this.fields = data;
+			return data;
+		})
 		.catch(() => this.fields = []);
 	}),
 	loadFilters: action(function loadFilters() {
+		const $this = this;
 		return q({
 			method: 'GET',
 			url:'/api/filters/filter',
@@ -58,7 +71,10 @@ export default observable({
 				code: cleanString(this.code)
 			}
 		})
-			.then(({data}) => this.filters = data)
-			.catch(() => this.filters = []);
+		.then(({data}) => {
+			$this.selectedFilters = _.map(data, ({value}) => value);
+			return data;
+		})
+		.catch(() => this.selectedFilters = []);
 	})
 });

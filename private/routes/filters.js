@@ -10,8 +10,8 @@ const {getUserByPublicCode} = require('../utils/authentication');
 const {valFilter} = require('../../shared/validations/filter');
 
 module.exports = {
-	saveFilter(req, res) {
-		const {id, code, value, field, category} = req.body;
+	toggleFilter(req, res) {
+		const {action, code, value, field, category} = req.body;
 
 		const user = getUserByPublicCode(code);
 		if (_.size(user) === 0) {
@@ -19,7 +19,7 @@ module.exports = {
 			return;
 		}
 
-		if (valFilter({value, field, category})) {
+		if (valFilter({action, value, field, category})) {
 			res.status(406).end();
 			return;
 		}
@@ -33,58 +33,33 @@ module.exports = {
 			category
 		});
 
+
 		if (_.size(dbFilters) > 0) {
-			db.table(FILTER_TABLE)
-				.remove({
-					id,
-					user_id,
-					private_code
-				})
-				.value();
+			if (action === 'remove') {
+				db.table(FILTER_TABLE)
+					.remove({
+						user_id,
+						private_code,
+						value
+					})
+					.value();
+			}
 		} else {
-			db.table(FILTER_TABLE)
-				.push({
-					id: uuid.v4(),
-					user_id,
-					private_code,
-					value,
-					field,
-					category,
-					entry_date_time: new Date().toISOString()
-				})
-				.value();
+
+			if (action === 'add') {
+				db.table(FILTER_TABLE)
+					.push({
+						id: uuid.v4(),
+						user_id,
+						private_code,
+						value,
+						field,
+						category,
+						entry_date_time: new Date().toISOString()
+					})
+					.value();
+			}
 		}
-
-		res.status(200).end();
-	},
-	deleteFilter(req, res) {
-		const {code, id} = req.body;
-
-		const user = getUserByPublicCode(code);
-		if (_.size(user) === 0 || _.size(id) === 0) {
-			res.status(406).end();
-			return;
-		}
-
-		const {id: user_id, private_code} = user;
-		const dbFilters = getData(FILTER_TABLE, {
-			user_id,
-			private_code,
-			id
-		});
-
-		if (_.size(dbFilters) === 0) {
-			res.status(406).end();
-			return;
-		}
-
-		db.table(FILTER_TABLE)
-			.remove({
-				id,
-				user_id,
-				private_code
-			})
-			.value();
 
 		res.status(200).end();
 	},

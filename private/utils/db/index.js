@@ -39,6 +39,6 @@ module.exports = {
 		CATEGORY_TABLE: 'category',
 		LABEL_TABLE: 'label',
 		ENTRY_TABLE: 'entries',
-		FIILTER_TABLE: 'filters'
+		FILTER_TABLE: 'filters'
 	}
 };
