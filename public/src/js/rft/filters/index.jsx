@@ -13,24 +13,34 @@ export default observer(React.createClass({
 		this.props.filters.toggleFilter({
 			...filter,
 			action: 'add'
-		});
-		this.props.filters.loadFilters();
+		})
+		.then(() => this.props.filters.loadFilters());
 	},
 	onChange(filterSelected) {
-		const removedFilter = _.difference(this.filters.filters, filterSelected);
+		// Get the different item between the selected and loaded list, if there is an item, it should be removed
+		const filters = this.props.filters.filters.toJS();
+		const removeItem = _.chain(filters)
+			.differenceBy(filterSelected, 'value')
+			.get('[0]')
+			.value();
 
-		if (_.size(removedFilter) > 0) {
+		console.log('=========  removeItem  =========');
+		console.log(removeItem);
+		console.log('=====  End of removeItem>  =====');
+		if (_.size(removeItem) > 0) {
+
 			this.props.filters.toggleFilter({
-				...removedFilter[0],
+				...removeItem,
 				action: 'remove'
-			});
+			})
+			.then(() => this.props.filters.loadFilters());
 		}
-		this.props.filters.loadFilters();
 	},
 	render() {
-		console.log('=========  this.props.filters.selectedFilters  =========');
-		console.log(this.props.filters.selectedFilters.toJS());
-		console.log('=====  End of this.props.filters.selectedFilters>  =====');
+		const selectedFilters = this.props.filters.selectedFilters;
+		console.log('=========  selectedFilters  =========');
+		console.log(selectedFilters);
+		console.log('=====  End of selectedFilters>  =====');
 		return (
 			<div className={classNames({'hide-filters': this.props.filters.visible})}>
 				<Multiselect
@@ -38,7 +48,7 @@ export default observer(React.createClass({
 					textField="field"
 					groupBy={filter => !_.isNull(filter) && this.props.translation.t(`filters.${filter.category}`)}
 					data={this.props.filters.fields.toJS()}
-					defaultValue={this.props.filters.selectedFilters.toJS()}
+					defaultValue={selectedFilters}
 					onSelect={this.onSelect}
 					onChange={this.onChange}
 				/>

@@ -11,6 +11,7 @@ export default observer(['store'], React.createClass({
 		this.translation = this.props.store.translation;
 		this.filters = this.props.store.filters;
 		this.filters.loadFields();
+		this.filters.loadFilters();
 	},
 	render() {
 		return (

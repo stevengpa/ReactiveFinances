@@ -1,4 +1,5 @@
 import {observable, action} from 'mobx';
+import {fromPromise} from 'mobx-utils';
 import _ from 'lodash';
 
 import q from '../q';
@@ -11,8 +12,8 @@ import auth from '../states/auth';
 
 export default observable({
 	// Observables
-	selectedFilters: [],
 	fields: [],
+	filters: [],
 	filter: {},
 	code: _.get(auth, 'user.code', ''),
 	visible: true,
@@ -21,6 +22,12 @@ export default observable({
 		return valFilter({
 			filter: this.filter
 		});
+	},
+	selectedFilters() {
+		console.log('=========  BOOM  =========');
+		console.log('BOOOOOOMMMM!!!!');
+		console.log('=====  End of BOOM>  =====');
+		return _.map(this.filters, ({value}) => value);
 	},
 	// Actions
 	toggleFilter: action(function toggleFilter(filter = this.filter) {
@@ -63,7 +70,6 @@ export default observable({
 		.catch(() => this.fields = []);
 	}),
 	loadFilters: action(function loadFilters() {
-		const $this = this;
 		return q({
 			method: 'GET',
 			url:'/api/filters/filter',
@@ -72,9 +78,9 @@ export default observable({
 			}
 		})
 		.then(({data}) => {
-			$this.selectedFilters = _.map(data, ({value}) => value);
+			this.filters.replace(data);
 			return data;
 		})
-		.catch(() => this.selectedFilters = []);
+		.catch(() => this.filters = []);
 	})
 });

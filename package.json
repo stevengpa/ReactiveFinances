@@ -4,7 +4,7 @@
   "description": "Reactive Finance Tracking",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "concurrently --kill-others 'nodemon app.js' 'gulp'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Steven Pérez Alfaro",
@@ -31,6 +31,7 @@
     "method-override": "^2.3.6",
     "mobx": "^2.5.1",
     "mobx-react": "^3.5.5",
+    "mobx-utils": "^1.0.1",
     "moment": "^2.14.1",
     "morgan": "^1.7.0",
     "nodemailer": "^2.5.0",
@@ -59,6 +60,7 @@
     "babelify": "^7.3.0",
     "brfs": "^1.4.3",
     "browserify": "^13.0.1",
+    "concurrently": "^2.2.0",
     "eslint": "^3.1.1",
     "eslint-plugin-react": "^5.2.2",
     "gulp": "^3.9.1",
