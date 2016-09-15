@@ -1,5 +1,4 @@
 import {observable, action} from 'mobx';
-import {fromPromise} from 'mobx-utils';
 import _ from 'lodash';
 
 import q from '../q';
@@ -9,6 +8,7 @@ import {cleanString} from '../../../../shared/validations';
 import {valFilter} from '../../../../shared/validations/filter';
 
 import auth from '../states/auth';
+import storeEntry from '../states/entry';
 
 export default observable({
 	// Observables
@@ -24,10 +24,7 @@ export default observable({
 		});
 	},
 	selectedFilters() {
-		console.log('=========  BOOM  =========');
-		console.log('BOOOOOOMMMM!!!!');
-		console.log('=====  End of BOOM>  =====');
-		return _.map(this.filters, ({value}) => value);
+		return _.map(this.filters.toJS(), ({value}) => value);
 	},
 	// Actions
 	toggleFilter: action(function toggleFilter(filter = this.filter) {
@@ -64,10 +61,10 @@ export default observable({
 			}
 		})
 		.then(({data}) => {
-			this.fields = data;
+			this.fields.replace(data);
 			return data;
 		})
-		.catch(() => this.fields = []);
+		.catch(() => this.fields.replace([]));
 	}),
 	loadFilters: action(function loadFilters() {
 		return q({
@@ -81,6 +78,12 @@ export default observable({
 			this.filters.replace(data);
 			return data;
 		})
-		.catch(() => this.filters = []);
+		.then((filters) => {
+			console.log('=========  filters  =========');
+			console.log(filters);
+			console.log('=====  End of filters>  =====');
+			storeEntry.loadFilteredEntries(filters);
+		})
+		.catch(() => this.filters.replace([]));
 	})
 });

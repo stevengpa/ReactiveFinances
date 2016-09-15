@@ -317,5 +317,22 @@ module.exports = {
 			.value();
 
 		res.status(200).end();
-	}
+	},
+	loadFilteredEntries(req, res) {
+		const {code, filters} = req.query;
+		const user = getUserByPublicCode(code);
+
+		if (_.size(user) === 0) {
+			res.status(406).end();
+			return;
+		}
+
+		//TODO: Remove id from the returned object
+		const dbEntries = db.table(ENTRY_TABLE)
+				.filter(filters)
+				.sortBy('entry_date_time')
+				.value() || [];
+
+		res.send(dbEntries);
+	},
 };

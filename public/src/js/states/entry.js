@@ -15,6 +15,7 @@ const EXCHANGE_CURR = 'USD';
 
 export default observable({
 	// Observables
+	entries: [],
 	category: {},
 	label: {},
 	entryDate: new Date().toISOString(),
@@ -93,6 +94,17 @@ export default observable({
 		} else {
 			return Promise.reject(constants.VALIDATION_ERROR);
 		}
+	}),
+	loadFilteredEntries: action(function loadFilteredEntries(filters) {
+		return q({
+			method: 'GET',
+			url:'/api/settings/entries',
+			params: {
+				filters,
+				code: cleanString(this.code)
+			}
+		})
+			.then(({data}) => this.entries.replace(data));
 	}),
 	clean: action(function clean() {
 		this.category = {};

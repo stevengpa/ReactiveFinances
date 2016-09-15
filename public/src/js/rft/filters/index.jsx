@@ -34,9 +34,6 @@ export default observer(React.createClass({
 		}
 	},
 	render() {
-		//TODO: selectedFilters is not updated when filters is loaded
-		const selectedFilters = this.props.filters.selectedFilters;
-
 		return (
 			<div className={classNames({'hide-filters': this.props.filters.visible})}>
 				<Multiselect
@@ -44,7 +41,7 @@ export default observer(React.createClass({
 					textField="field"
 					groupBy={filter => !_.isNull(filter) && this.props.translation.t(`filters.${filter.category}`)}
 					data={this.props.filters.fields.toJS()}
-					defaultValue={selectedFilters}
+					value={this.props.filters.selectedFilters}
 					onSelect={this.onSelect}
 					onChange={this.onChange}
 				/>

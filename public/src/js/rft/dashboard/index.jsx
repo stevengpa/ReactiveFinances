@@ -10,8 +10,15 @@ export default observer(['store'], React.createClass({
 	componentWillMount() {
 		this.translation = this.props.store.translation;
 		this.filters = this.props.store.filters;
+		this.entry = this.props.store.entry;
 		this.filters.loadFields();
 		this.filters.loadFilters();
+		this.entry.loadFilteredEntries()
+			.then((result) => {
+				console.log('=========  result  =========');
+				console.log(result);
+				console.log('=====  End of result>  =====');
+			});
 	},
 	render() {
 		return (
