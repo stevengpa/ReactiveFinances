@@ -24,9 +24,6 @@ export default observer(React.createClass({
 			.get('[0]')
 			.value();
 
-		console.log('=========  removeItem  =========');
-		console.log(removeItem);
-		console.log('=====  End of removeItem>  =====');
 		if (_.size(removeItem) > 0) {
 
 			this.props.filters.toggleFilter({
@@ -37,10 +34,9 @@ export default observer(React.createClass({
 		}
 	},
 	render() {
+		//TODO: selectedFilters is not updated when filters is loaded
 		const selectedFilters = this.props.filters.selectedFilters;
-		console.log('=========  selectedFilters  =========');
-		console.log(selectedFilters);
-		console.log('=====  End of selectedFilters>  =====');
+
 		return (
 			<div className={classNames({'hide-filters': this.props.filters.visible})}>
 				<Multiselect
