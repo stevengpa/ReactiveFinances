@@ -26,6 +26,22 @@ export default observable({
 	selectedFilters() {
 		return _.map(this.filters.toJS(), ({value}) => value);
 	},
+	queryFilter() {
+		//INFO: Filter categories: currency, category, label, date
+		return _.reduce(this.filters.toJS(), (memo, {category, value}) => {
+			if (category === 'category' || category === 'label') {
+				memo.push({ [category]: {id: value}, path: `${category}.id`, value });
+			} else if (category === 'date') {
+				const entryDate = value.split('-');
+				memo.push({ ['year']: _.toInteger(entryDate[0]), path: 'year', value: _.toInteger(entryDate[0]) });
+				memo.push({ ['month']: _.toInteger(entryDate[1]), path: 'month', value: _.toInteger(entryDate[1]) });
+			} else {
+				memo.push({ [category]: value, path: category, value });
+			}
+
+			return memo;
+		}, []);
+	},
 	// Actions
 	toggleFilter: action(function toggleFilter(filter = this.filter) {
 		const {action, value, field, category} = filter;
@@ -47,7 +63,13 @@ export default observable({
 					category: cleanString(category),
 					action: cleanString(action)
 				}
+			})
+			.then((result) => {
+				// Load Entries according with the new filter
+				storeEntry.loadFilteredEntries(this.queryFilter);
+				return result;
 			});
+
 		} else {
 			return Promise.reject(constants.VALIDATION_ERROR);
 		}
@@ -78,12 +100,7 @@ export default observable({
 			this.filters.replace(data);
 			return data;
 		})
-		.then((filters) => {
-			console.log('=========  filters  =========');
-			console.log(filters);
-			console.log('=====  End of filters>  =====');
-			storeEntry.loadFilteredEntries(filters);
-		})
+		.then(() => storeEntry.loadFilteredEntries(this.queryFilter))
 		.catch(() => this.filters.replace([]));
 	})
 });

@@ -327,12 +327,25 @@ module.exports = {
 			return;
 		}
 
-		//TODO: Remove id from the returned object
 		const dbEntries = db.table(ENTRY_TABLE)
-				.filter(filters)
-				.sortBy('entry_date_time')
-				.value() || [];
+			.reduce((memo, entry) => {
+
+				let matchEntry = true;
+				_.each(filters, (filter) => {
+					const {path, value} = JSON.parse(filter);
+					if (_.toString(_.get(entry, path)) !== _.toString(value)) {
+						matchEntry = false;
+					}
+				});
+
+				if (matchEntry) {
+					memo.push(_.cloneDeep(entry));
+				}
+				return memo;
+			}, [])
+			.sortBy('entry_date_time')
+			.value() || [];
 
 		res.send(dbEntries);
-	},
+	}
 };

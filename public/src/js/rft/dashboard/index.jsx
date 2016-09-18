@@ -13,12 +13,6 @@ export default observer(['store'], React.createClass({
 		this.entry = this.props.store.entry;
 		this.filters.loadFields();
 		this.filters.loadFilters();
-		this.entry.loadFilteredEntries()
-			.then((result) => {
-				console.log('=========  result  =========');
-				console.log(result);
-				console.log('=====  End of result>  =====');
-			});
 	},
 	render() {
 		return (

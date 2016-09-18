@@ -104,7 +104,7 @@ export default observable({
 				code: cleanString(this.code)
 			}
 		})
-			.then(({data}) => this.entries.replace(data));
+		.then(({data}) => this.entries.replace(data));
 	}),
 	clean: action(function clean() {
 		this.category = {};

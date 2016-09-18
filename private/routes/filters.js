@@ -88,7 +88,7 @@ module.exports = {
 			res.status(406).end();
 			return;
 		}
-
+		//INFO: Filter categories: currency, category, label, date
 		const dbFields = db.table(ENTRY_TABLE)
 				.filter({user_id: user.id})
 				.reduce((memo, entry) => {
@@ -118,8 +118,8 @@ module.exports = {
 					memo.push(fields);
 					if (entry.month && entry.year) {
 						memo.push({
-							value: `${entry.month}-${entry.year}`,
-							field: `${entry.month}-${entry.year}`,
+							value: `${entry.year}-${entry.month}`,
+							field: `${entry.year}-${entry.month}`,
 							category: 'date'
 						});
 					}
