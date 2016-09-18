@@ -1,3 +1,35 @@
+$color-gray-02-op2: opacify($color-gray-02, 0.2);
+
 .hide-filter {
   display: none;
+}
+
+.app-container {
+
+  .filters {
+
+    .rw-widget {
+      border: 0;
+      box-shadow: 0 4px 1px -2px $color-gray-02-op2;
+      display: block;
+      position: absolute;
+      right: 0;
+      left: 0;
+      padding-bottom: 4px;
+
+      .rw-multiselect-taglist li {
+        border: 1px solid $color-blue-03;
+        background-color: $color-white;
+        cursor: pointer;
+        color: $color-blue-03;
+
+        .rw-tag-btn {
+          padding-left: 4px;
+          padding-right: 4px;
+        }
+      }
+
+    }
+  }
+
 }

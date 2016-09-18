@@ -8,6 +8,9 @@ export default observer(['store'], React.createClass({
 	componentWillMount() {
 		this.login = this.props.store.login;
 		this.translation = this.props.store.translation;
+
+		this.app = this.props.store.app;
+		this.app.customCSS = '';
 	},
 	emailChange(e) {
 		this.login.setEmail(e.target.value);

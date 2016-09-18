@@ -8,6 +8,9 @@ export default observer(['store'], React.createClass({
 	componentWillMount() {
 		this.signup = this.props.store.signup;
 		this.translation = this.props.store.translation;
+
+		this.app = this.props.store.app;
+		this.app.customCSS = '';
 	},
 	render() {
 		return (

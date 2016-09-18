@@ -13,6 +13,9 @@ export default observer(['store'], React.createClass({
 		this.entry = this.props.store.entry;
 		this.filters.loadFields();
 		this.filters.loadFilters();
+
+		this.app = this.props.store.app;
+		this.app.customCSS = 'master-dashboard';
 	},
 	render() {
 		return (
@@ -21,7 +24,9 @@ export default observer(['store'], React.createClass({
 					filters={this.filters}
 					translation={this.translation}
 				/>
-				<h1>Dashboard</h1>
+				<div className="dashboard">
+					<h1>Dashboard</h1>
+				</div>
 				<Add stage="new"/>
 			</div>
 		);

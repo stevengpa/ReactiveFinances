@@ -35,7 +35,7 @@ export default observer(React.createClass({
 	},
 	render() {
 		return (
-			<div className={classNames({'hide-filters': this.props.filters.visible})}>
+			<div className={classNames('filters', {'hide-filters': this.props.filters.visible})}>
 				<Multiselect
 					valueField="value"
 					textField="field"
