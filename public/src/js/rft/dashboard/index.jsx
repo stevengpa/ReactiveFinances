@@ -16,8 +16,13 @@ export default observer(['store'], React.createClass({
 
 		this.app = this.props.store.app;
 		this.app.customCSS = 'master-dashboard';
+
+		this.charts = this.props.store.charts;
 	},
 	render() {
+		console.log('=========  TEST  =========');
+		console.log(this.charts);
+		console.log('=====  End of TEST>  =====');
 		return (
 			<div>
 				<Filter
