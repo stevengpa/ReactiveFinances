@@ -30,7 +30,7 @@ export default observable({
 			.groupBy('category.category')
 			.reduce((accumulator, entries, category) => {
 
-				const total = _.reduce(entries, (memo, {amount_usd, amount_lc}) => {
+				const totals = _.reduce(entries, (memo, {amount_usd, amount_lc}) => {
 					memo.totalUSD += amount_usd;
 					memo.totalLC += amount_lc;
 					return memo;
@@ -39,10 +39,42 @@ export default observable({
 					totalLC: 0
 				});
 
-				accumulator.push({category, ...total});
+				accumulator.push({category, ...totals});
 				return accumulator;
 			}, [])
 			.sortBy('category')
+			.value();
+	},
+	totalsByCategoryPeriod() {
+		return _.chain(storeEntry.entries.toJS())
+			.map((entry) => _.assign(entry, {period: `${entry.year}-${entry.month}`}))
+			.groupBy('period')
+			.reduce((accumulator, array, period) => {
+
+				const totals = _.chain(array)
+					.groupBy('category.category')
+					.reduce((memo, entries, category) => {
+						const detail = {
+							totalUSD: 0,
+							totalLC: 0,
+							category,
+							period
+						};
+
+						_.each(entries, ({amount_usd, amount_lc}) => {
+							detail.totalUSD += amount_usd;
+							detail.totalLC += amount_lc;
+						});
+
+						memo.push(detail);
+						return memo;
+					}, [])
+					.value();
+
+				accumulator.push({period, totals});
+				return accumulator;
+			}, [])
+			.sortBy('period')
 			.value();
 	},
 	monthlyLineChart() {
