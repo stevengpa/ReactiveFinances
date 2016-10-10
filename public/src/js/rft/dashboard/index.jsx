@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 import Filter from '../filters';
 
 import Add from './partials/add';
+import PeriodChart from './partials/timeseries-chart';
 
 export default observer(['store'], React.createClass({
 	displayName: 'Dashboard',
@@ -16,13 +17,8 @@ export default observer(['store'], React.createClass({
 
 		this.app = this.props.store.app;
 		this.app.customCSS = 'master-dashboard';
-
-		this.charts = this.props.store.charts;
 	},
 	render() {
-		console.log('=========  TEST  =========');
-		console.log(this.charts);
-		console.log('=====  End of TEST>  =====');
 		return (
 			<div>
 				<Filter
@@ -30,7 +26,7 @@ export default observer(['store'], React.createClass({
 					translation={this.translation}
 				/>
 				<div className="dashboard">
-					<h1>Dashboard</h1>
+					<PeriodChart/>
 				</div>
 				<Add stage="new"/>
 			</div>

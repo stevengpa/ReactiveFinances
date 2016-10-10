@@ -77,7 +77,10 @@ export default observable({
 			.sortBy('period')
 			.value();
 	},
-	monthlyLineChart() {
-
+	chartPeriods() {
+		return _.reduce(this.periods, (memo, period) => {
+			memo.push(period);
+			return memo;
+		}, ['x']);
 	}
 });

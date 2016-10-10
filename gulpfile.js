@@ -22,7 +22,7 @@ function Build(compFileName) {
 	return browserify({
 		entries: compFileName,
 		extensions: ['.js', '.jsx'],
-		debug
+		debug: true
 	})
 		.transform('babelify', {
 			presets: ['es2015', 'stage-3', 'react'],
