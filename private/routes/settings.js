@@ -339,7 +339,11 @@ module.exports = {
 				});
 
 				if (matchEntry) {
-					memo.push(_.cloneDeep(entry));
+					memo.push(_.chain(entry)
+						.cloneDeep(entry)
+						.omit(['user_id', 'private_code'])
+						.value()
+					);
 				}
 				return memo;
 			}, [])

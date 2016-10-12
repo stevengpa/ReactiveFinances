@@ -1,50 +1,12 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import _ from 'lodash';
+import {Row, Col} from 'react-bootstrap';
 
 import Chart from '../../shared/chart';
 
 export default observer(['store'], React.createClass({
 	componentWillMount() {
 		this.charts = this.props.store.charts;
-		console.log('=========  this.charts  =========');
-		console.log(this.charts);
-		console.log('=====  End of this.charts>  =====');
-	},
-	columns() {
-
-			const b = _.reduce(this.charts.categories, (memo, category) => {
-
-				// Create an empty array for each category
-				if (!_.has(memo, category)) {
-					memo[category] = [];
-				}
-
-				// Insert the category name as the first item
-				if (!_.includes(memo[category], category)) {
-					memo[category].push(category);
-				}
-
-				_.each(this.charts.periods, (period) => {
-					const data = _.get(this.charts, 'totalsByCategoryPeriod.totals', []);
-
-					const d = _.filter(data, {period, category});
-					if (_.size(d) > 0) {
-						const item = _.get(d, '[0].totalUSD', 0);
-						memo[category].push(item);
-					} else {
-						memo[category].push(0);
-					}
-				});
-
-				return memo;
-		}, []);
-
-		console.log('=========  b  =========');
-		console.log(b);
-		console.log('=====  End of b>  =====');
-
-		return b;
 	},
 	render() {
 		const chartOptions = {
@@ -52,11 +14,7 @@ export default observer(['store'], React.createClass({
 			data: {
 				x: 'x',
 				xFormat: '%Y-%M',
-				columns: [
-					this.charts.chartPeriods,
-					['data1', 30],
-					['data2', 50]
-				]
+				columns: this.charts.chartCategoriesAndPeriod
 			},
 			axis : {
 				x : {
@@ -65,12 +23,23 @@ export default observer(['store'], React.createClass({
 						format: '%Y-%M'
 					}
 				}
+			},
+			padding: {
+				top: 24,
+				right: 24,
+				bottom: 24,
+				left: 24
 			}
 		};
 
-		this.columns();
 		return (
-			<Chart chartOptions={chartOptions}/>
+			<Row>
+				<Col xs={1}/>
+				<Col xs={10}>
+					<Chart className="chart-line-summary-category" chartOptions={chartOptions}/>
+				</Col>
+				<Col xs={1}/>
+			</Row>
 		);
 	}
 }));

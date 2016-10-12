@@ -8,6 +8,7 @@ import entry from './states/entry';
 import filters from './states/filters';
 import app from './states/app';
 import charts from './states/charts';
+import tables from './states/tables';
 
 export default {
 	translation,
@@ -19,5 +20,6 @@ export default {
 	entry,
 	filters,
 	app,
-	charts
+	charts,
+	tables
 };

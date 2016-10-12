@@ -1,4 +1,4 @@
-import {observable, action} from 'mobx';
+import {observable} from 'mobx';
 import _ from 'lodash';
 
 import storeEntry from '../states/entry';
@@ -77,10 +77,54 @@ export default observable({
 			.sortBy('period')
 			.value();
 	},
+	totalCategoriesSortByPeriod(totalField = 'totalUSD') {
+		return _.reduce(this.categories, (memo, category) => {
+
+			// Create an empty array for each category
+			if (!_.has(memo, category)) {
+				memo[category] = [];
+			}
+
+			// Insert the category name as the first item
+			if (!_.includes(memo[category], category)) {
+				memo[category].push(category);
+			}
+
+			_.each(this.periods, (period) => {
+
+				// Filter the Category's totals by Period
+				const totalsByCategoryPeriod = _.chain(this.totalsByCategoryPeriod)
+					.filter({period})
+					.get('0.totals', [])
+					.value();
+
+				// Take the first Total found by Period and Category
+				const totalCategory = _.chain(totalsByCategoryPeriod)
+					.filter({period, category})
+					.head()
+					.value();
+
+				if (_.size(totalCategory) > 0) {
+					const totalUSD = _.get(totalCategory, totalField, 0);
+					memo[category].push(totalUSD);
+				} else {
+					memo[category].push(0);
+				}
+			});
+
+			return memo;
+		}, []);
+	},
 	chartPeriods() {
 		return _.reduce(this.periods, (memo, period) => {
 			memo.push(period);
 			return memo;
 		}, ['x']);
+	},
+	chartCategoriesAndPeriod() {
+		const totalCategories = [];
+		totalCategories.push(this.chartPeriods);
+		_.mapKeys(this.totalCategoriesSortByPeriod, (category) => totalCategories.push(category));
+		return totalCategories;
 	}
 });

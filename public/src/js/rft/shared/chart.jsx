@@ -4,7 +4,8 @@ import c3 from 'c3';
 
 export default observer(React.createClass({
 	propTypes: {
-		chartOptions: React.PropTypes.object.isRequired
+		chartOptions: React.PropTypes.object.isRequired,
+		className: React.PropTypes.string
 	},
 	componentDidMount() {
 		c3.generate(this.props.chartOptions);
@@ -16,7 +17,7 @@ export default observer(React.createClass({
 		let {bindto} = this.props.chartOptions;
 		bindto = bindto.replace('#', '');
 		return (
-			<div id={bindto}></div>
+			<div id={bindto} className={this.props.className}></div>
 		);
 	}
 }));
