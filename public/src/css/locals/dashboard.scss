@@ -8,8 +8,20 @@
 
 .dashboard {
   padding-top: 38px;
+  overflow: auto;
 
-  .chart-line-summary-category {
+  .summary-table-container {
+    margin: 32px 0 32px;
+
+    .react-bs-table-tool-bar {
+      margin-bottom: 24px;
+    }
+
+    .delete-entry {
+      span {
+        padding-right: 4px;
+      }
+    }
 
   }
 }

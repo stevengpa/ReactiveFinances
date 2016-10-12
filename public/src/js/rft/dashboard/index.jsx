@@ -1,11 +1,11 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {Row, Col} from 'react-bootstrap';
 
 import Filter from '../filters';
 
 import Add from './partials/add';
 import PeriodChart from './partials/timeseries-chart';
+import SummaryTable from './partials/summary-table';
 
 export default observer(['store'], React.createClass({
 	displayName: 'Dashboard',
@@ -18,10 +18,6 @@ export default observer(['store'], React.createClass({
 
 		this.app = this.props.store.app;
 		this.app.customCSS = 'master-dashboard';
-
-		console.log('=========  this.props.store.tables  =========');
-		console.log(this.props.store.tables);
-		console.log('=====  End of this.props.store.tables>  =====');
 	},
 	render() {
 		return (
@@ -31,11 +27,8 @@ export default observer(['store'], React.createClass({
 					translation={this.translation}
 				/>
 				<div className="dashboard">
-					<Row>
-						<Col xs={12}>
-							<PeriodChart/>
-						</Col>
-					</Row>
+					<PeriodChart/>
+					<SummaryTable/>
 				</div>
 				<Add stage="new"/>
 			</div>

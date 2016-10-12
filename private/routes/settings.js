@@ -318,6 +318,28 @@ module.exports = {
 
 		res.status(200).end();
 	},
+	deleteEntry(req, res) {
+
+		const {id: idEntry, code} = req.body;
+
+		const user = getUserByPublicCode(code);
+		if (_.size(user) === 0 || _.size(idEntry) === 0) {
+			res.status(406).end();
+			return;
+		}
+
+		const {id: userId, private_code} = user;
+
+		db.table(ENTRY_TABLE)
+			.remove({
+				id: idEntry,
+				user_id: userId,
+				private_code
+			})
+			.value();
+
+		res.status(200).end();
+	},
 	loadFilteredEntries(req, res) {
 		const {code, filters} = req.query;
 		const user = getUserByPublicCode(code);

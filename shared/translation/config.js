@@ -76,7 +76,9 @@ module.exports = {
 				description: 'Descripción',
 				entry_ok: "La transacción ha sido guardada",
 				entry_error: "La transacción contiene uno o varios valores incorrectos",
-				entry_update_ok: "La transacción fue actualizada"
+				entry_update_ok: "La transacción fue actualizada",
+				delete_ok: "La transacción fue eliminada.",
+				delete_error: "Lo sentimos, la transacción no fue eliminada."
 			}
 		},
 		actions: {
@@ -106,6 +108,25 @@ module.exports = {
 			category: "Categoría",
 			label: "Etiqueta",
 			date: "Fecha"
+		},
+		table_summary: {
+			columns: {
+				id: "id",
+				category: "Categoría",
+				label: "Etiqueta",
+				amount_usd: "Monto USD",
+				amount_lc: "Monto Local",
+				amount: "Monto",
+				currency: "Moneda",
+				exchange: "Tipo Cambio",
+				month: "Mes",
+				year: "Año",
+				entry_date: "Fecha",
+				entry_date_time: "Fecha Ingreso",
+				description: "Descripción",
+				search: "Buscar",
+				delete: "Borrar"
+			}
 		}
 	},
 	en: {
@@ -185,7 +206,9 @@ module.exports = {
 				description: 'Description',
 				entry_ok: "The transaction was saved",
 				entry_error: "Wrong transaction value(s)",
-				entry_update_ok: "The transaction was updated"
+				entry_update_ok: "The transaction was updated",
+				delete_ok: "The transaction was deleted.",
+				delete_error: "Sorry, the transaction was not deleted."
 			}
 		},
 		actions: {
@@ -215,6 +238,25 @@ module.exports = {
 			category: "Category",
 			label: "Label",
 			date: "Date"
+		},
+		table_summary: {
+			columns: {
+				id: "id",
+				category: "Category",
+				label: "Label",
+				amount_usd: "Amount USD",
+				amount_lc: "Amount Local",
+				amount: "Amount",
+				currency: "Currency",
+				exchange: "Exchange",
+				month: "Month",
+				year: "Year",
+				entry_date: "Date",
+				entry_date_time: "Entry Date",
+				description: "Description",
+				search: "Search",
+				delete: "Delete"
+			}
 		}
 	}
 };

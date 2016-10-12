@@ -95,6 +95,20 @@ export default observable({
 			return Promise.reject(constants.VALIDATION_ERROR);
 		}
 	}),
+	deleteEntry: action(function deleteEntry(id) {
+		if (_.size(id) > 0) {
+			return q({
+				method: 'DELETE',
+				url:'/api/settings/entry',
+				data: {
+					id,
+					code: cleanString(this.code)
+				}
+			});
+		} else {
+			return Promise.reject(constants.VALIDATION_ERROR);
+		}
+	}),
 	loadFilteredEntries: action(function loadFilteredEntries(filters) {
 		return q({
 			method: 'GET',

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import {observer} from 'mobx-react';
 import {Row, Col, Button, Glyphicon, Modal, FormControl} from 'react-bootstrap';
@@ -58,11 +57,11 @@ export default observer(['store'], React.createClass({
 			.then(() => {
 				Notify(this.translation.t('settings.entries.entry_ok'), 'success');
 				this.entry.clean();
-				//this.entry.loadeEntries();
+				this.entry.loadFilteredEntries();
 			})
 			.catch(() => {
 				Notify(this.translation.t('settings.entries.entry_error'), 'error');
-				//this.entry.loadeEntries();
+				this.entry.loadFilteredEntries();
 			});
 	},
 	render() {
