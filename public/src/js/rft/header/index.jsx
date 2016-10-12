@@ -11,9 +11,9 @@ export default observer(['store'], React.createClass({
 	},
 	handleSelect(eventKey) {
 		event.preventDefault();
-		if (eventKey === '2') {
+		if (eventKey === '3') {
 			this.props.store.translation.setLanguage('es');
-		} else if (eventKey === '3') {
+		} else if (eventKey === '4') {
 			this.props.store.translation.setLanguage('en');
 		}
 	},
@@ -24,9 +24,15 @@ export default observer(['store'], React.createClass({
 
 		const pathLogInOut = (!this.auth.isAuth) ? '/login' : '/logout';
 
+		const Dashboard = (this.auth.isAuth) ? (
+			<LinkContainer to="/dashboard" className="btn-link header-brandname">
+				<NavItem eventKey="1"><Glyphicon glyph="dashboard"/>&nbsp;&nbsp;{this.translation.t('header.dashboard')}</NavItem>
+			</LinkContainer>
+		) : null;
+
 		const Settings = (this.auth.isAuth) ? (
 			<LinkContainer to="/settings" className="btn-link header-brandname">
-				<NavItem eventKey="5"><Glyphicon glyph="cog"/>&nbsp;&nbsp;{this.translation.t('header.settings')}</NavItem>
+				<NavItem eventKey="6"><Glyphicon glyph="cog"/>&nbsp;&nbsp;{this.translation.t('header.settings')}</NavItem>
 			</LinkContainer>
 		) : null;
 
@@ -46,19 +52,22 @@ export default observer(['store'], React.createClass({
 					<Navbar.Collapse>
 
 						<Nav pullRight onSelect={this.handleSelect}>
+
+							{Dashboard}
+
 							<NavDropdown
-								eventKey="1"
+								eventKey="2"
 								title={`${this.translation.t('header.language')} - ${_.toUpper(this.translation.language)}`}
 								id="basic-nav-dropdown"
 							>
-								<MenuItem eventKey="2" ref="2">ES</MenuItem>
-								<MenuItem eventKey="3" ref="3">EN</MenuItem>
+								<MenuItem eventKey="3" ref="3">ES</MenuItem>
+								<MenuItem eventKey="4" ref="4">EN</MenuItem>
 							</NavDropdown>
 
 							{Settings}
 
 							<LinkContainer to={pathLogInOut} className="btn-link header-brandname">
-								<NavItem eventKey="4"><Glyphicon glyph="user"/>&nbsp;&nbsp;{labelLogInOut}</NavItem>
+								<NavItem eventKey="5"><Glyphicon glyph="user"/>&nbsp;&nbsp;{labelLogInOut}</NavItem>
 							</LinkContainer>
 
 						</Nav>

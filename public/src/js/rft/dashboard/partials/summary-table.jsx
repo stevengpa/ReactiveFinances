@@ -62,6 +62,7 @@ export default observer(['store'], React.createClass({
 							exportCSV={true}
 							csvFileName="reactive-finances.csv"
 							searchPlaceholder={this.translation.t('table_summary.columns.search')}
+							exportCSVText={this.translation.t('table_summary.columns.export_csv')}
 						>
 							{/*ID*/}
 							<TableHeaderColumn

@@ -4,7 +4,8 @@ module.exports = {
 			language: "Lenguaje",
 			login: "Iniciar sesión",
 			logout: "Cerrar sesión",
-			settings: "Mantenimiento"
+			settings: "Mantenimiento",
+			dashboard: "Métricas"
 		},
 		login: {
 			title: "Inicio de sesión",
@@ -125,7 +126,8 @@ module.exports = {
 				entry_date_time: "Fecha Ingreso",
 				description: "Descripción",
 				search: "Buscar",
-				delete: "Borrar"
+				delete: "Borrar",
+				export_csv: "Exportar CSV"
 			}
 		}
 	},
@@ -134,7 +136,8 @@ module.exports = {
 			language: "Language",
 			login: "Log In",
 			logout: "Log Out",
-			settings: "Settings"
+			settings: "Settings",
+			dashboard: "Dashboard"
 		},
 		login: {
 			title: "Log In",
@@ -255,7 +258,8 @@ module.exports = {
 				entry_date_time: "Entry Date",
 				description: "Description",
 				search: "Search",
-				delete: "Delete"
+				delete: "Delete",
+				export_csv: "Export to CSV"
 			}
 		}
 	}
