@@ -6,6 +6,7 @@ import Chart from '../../shared/chart';
 
 export default observer(['store'], React.createClass({
 	componentWillMount() {
+		this.translation = this.props.store.translation;
 		this.charts = this.props.store.charts;
 	},
 	render() {
@@ -33,13 +34,24 @@ export default observer(['store'], React.createClass({
 		};
 
 		return (
-			<Row>
-				<Col xs={1}/>
-				<Col xs={10}>
-					<Chart className="chart-line-summary-category" chartOptions={chartOptions}/>
-				</Col>
-				<Col xs={1}/>
-			</Row>
+			<div className="category-chart">
+				<Row>
+					<Col xs={1}/>
+					<Col xs={10}>
+						<h2 className="title-section">{this.translation.t('charts.titles.category_timeline')}</h2>
+						<hr/>
+					</Col>
+					<Col xs={1}/>
+				</Row>
+
+				<Row>
+					<Col xs={1}/>
+					<Col xs={10}>
+						<Chart className="chart-line-summary-category" chartOptions={chartOptions}/>
+					</Col>
+					<Col xs={1}/>
+				</Row>
+			</div>
 		);
 	}
 }));

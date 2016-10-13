@@ -350,17 +350,55 @@ module.exports = {
 		}
 
 		const dbEntries = db.table(ENTRY_TABLE)
+			.filter({user_id: user.id})
 			.reduce((memo, entry) => {
 
-				let matchEntry = true;
+				let matchEntry = false; // Flag if Standard Filters does match
+				let matchDate = false;  // Flag if Date Filter does match
+				let includesDate = false; // Flag if "date" filter was requested
+
 				_.each(filters, (filter) => {
-					const {path, value} = JSON.parse(filter);
-					if (_.toString(_.get(entry, path)) !== _.toString(value)) {
-						matchEntry = false;
+					const {path, value, date} = JSON.parse(filter);
+
+					if (!_.isEmpty(date)) {
+						includesDate = true;
+						// If Date comparison still pending to be found.
+						// If the entry found the filter criteria, then it will select the entry as valid
+						if (!matchDate) {
+							const year = date[0];
+							const month = date[1];
+							matchDate = _.toString(_.get(entry, year.path)) === _.toString(year.value) &&
+								_.toString(_.get(entry, month.path)) === _.toString(month.value);
+						}
+
+					} else {
+
+						// Check if Entry does match with the Standard filter criteria
+						if (!matchEntry) {
+							if (_.toString(_.get(entry, path)) === _.toString(value)) {
+								matchEntry = true;
+							}
+						}
+
 					}
 				});
 
-				if (matchEntry) {
+				// Is valid if the Entry matched with a criteria and date filter was not requested.
+				if (matchEntry && !includesDate) {
+					memo.push(_.chain(entry)
+						.cloneDeep(entry)
+						.omit(['user_id', 'private_code'])
+						.value()
+					);
+				// Is valid if the Entry matched and date filter was found PLUS date criteria matched
+				} else if (matchEntry && includesDate && matchDate) {
+					memo.push(_.chain(entry)
+						.cloneDeep(entry)
+						.omit(['user_id', 'private_code'])
+						.value()
+					);
+				// Return all entries if there are not filters
+				} else if (_.size(filters) === 0) {
 					memo.push(_.chain(entry)
 						.cloneDeep(entry)
 						.omit(['user_id', 'private_code'])
@@ -369,7 +407,8 @@ module.exports = {
 				}
 				return memo;
 			}, [])
-			.sortBy('entry_date_time')
+			.sortBy('entry_date')
+			.reverse()
 			.value() || [];
 
 		res.send(dbEntries);

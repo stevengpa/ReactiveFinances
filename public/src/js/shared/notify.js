@@ -1,7 +1,7 @@
 import PNotify from 'pnotify';
 import $ from 'jquery';
 
-PNotify.prototype.options.styling = "bootstrap3";
+PNotify.prototype.options.styling = 'bootstrap3';
 
 var animate_in = $('#animate_in').val(),
 	animate_out = $('#animate_out').val();

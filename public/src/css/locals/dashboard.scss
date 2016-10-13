@@ -10,6 +10,14 @@
   padding-top: 38px;
   overflow: auto;
 
+  .title-section {
+    text-align: center;
+  }
+
+  .category-chart, .label-chart, .summary-table {
+    margin-top: 42px;
+  }
+
   .summary-table-container {
     margin: 32px 0 32px;
 

@@ -33,13 +33,21 @@ export default observable({
 				memo.push({ [category]: {id: value}, path: `${category}.id`, value });
 			} else if (category === 'date') {
 				const entryDate = value.split('-');
-				memo.push({ ['year']: _.toInteger(entryDate[0]), path: 'year', value: _.toInteger(entryDate[0]) });
-				memo.push({ ['month']: _.toInteger(entryDate[1]), path: 'month', value: _.toInteger(entryDate[1]) });
+				memo.push({date: [{
+						year: _.toInteger(entryDate[0]),
+						path: 'year',
+						value: _.toInteger(entryDate[0])
+					}, {
+						month: _.toInteger(entryDate[1]),
+						path: 'month',
+						value: _.toInteger(entryDate[1])
+					}
+				]});
 			} else {
 				memo.push({ [category]: value, path: category, value });
 			}
 
-			return memo;
+			return _.uniqWith(memo, _.isEqual);
 		}, []);
 	},
 	// Actions

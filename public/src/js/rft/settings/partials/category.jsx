@@ -28,7 +28,7 @@ export default observer(function Category(props) {
 		}
 	}
 
-	function activeFormatter(cell, row) {
+	function activeFormatter(cell) {
 		const active = _.toString(cell) === 'true';
 		return (
 			<input type="checkbox" defaultChecked={active}/>
@@ -41,7 +41,7 @@ export default observer(function Category(props) {
 		afterSaveCell: onAfterSaveCell
 	};
 
-	function onAfterSaveCell(row, cellName, cellValue) {
+	function onAfterSaveCell(row) {
 		const {id, category, active} = row;
 
 		props.category.updateCategory(id, category, active)

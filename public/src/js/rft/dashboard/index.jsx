@@ -4,7 +4,9 @@ import {observer} from 'mobx-react';
 import Filter from '../filters';
 
 import Add from './partials/add';
-import PeriodChart from './partials/timeseries-chart';
+import CategoryTimeLineChart from './partials/category-timeseries-chart';
+import LabelTimeLineChart from './partials/label-timeseries-chart';
+
 import SummaryTable from './partials/summary-table';
 
 export default observer(['store'], React.createClass({
@@ -27,7 +29,8 @@ export default observer(['store'], React.createClass({
 					translation={this.translation}
 				/>
 				<div className="dashboard">
-					<PeriodChart/>
+					<CategoryTimeLineChart/>
+					<LabelTimeLineChart/>
 					<SummaryTable/>
 				</div>
 				<Add stage="new"/>

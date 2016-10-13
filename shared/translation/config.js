@@ -129,6 +129,13 @@ module.exports = {
 				delete: "Borrar",
 				export_csv: "Exportar CSV"
 			}
+		},
+		charts: {
+			titles: {
+				category_timeline: "Gráfico cronológico por categoría (USD)",
+				label_timeline: "Gráfico cronológico por etiqueta (USD)",
+				entries: "Entradas"
+			}
 		}
 	},
 	en: {
@@ -260,6 +267,13 @@ module.exports = {
 				search: "Search",
 				delete: "Delete",
 				export_csv: "Export to CSV"
+			}
+		},
+		charts: {
+			titles: {
+				category_timeline: "Timeline chart by category (USD)",
+				label_timeline: "Timeline chart by Label (USD)",
+				entries: "Entries"
 			}
 		}
 	}

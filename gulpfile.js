@@ -57,4 +57,5 @@ gulp.task('watch-sass', function () {
 	gulp.watch('./public/src/css/locals/*.scss', ['sass']);
 });
 
+gulp.task('compile', ['compile-front', 'sass']);
 gulp.task('default', ['watch-front', 'watch-sass']);

@@ -29,6 +29,7 @@ export default observer(['store'], React.createClass({
 		this.category = this.props.store.settings.category;
 		this.label = this.props.store.settings.label;
 		this.entry = this.props.store.entry;
+		this.filters = this.props.store.filters;
 
 		this.currency.loadCurrency()
 			.then(({currency, exchange}) => {
@@ -58,6 +59,7 @@ export default observer(['store'], React.createClass({
 				Notify(this.translation.t('settings.entries.entry_ok'), 'success');
 				this.entry.clean();
 				this.entry.loadFilteredEntries();
+				this.filters.loadFields();
 			})
 			.catch(() => {
 				Notify(this.translation.t('settings.entries.entry_error'), 'error');

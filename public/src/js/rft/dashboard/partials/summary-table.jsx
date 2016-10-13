@@ -13,6 +13,7 @@ export default observer(['store'], React.createClass({
 		this.tables = this.props.store.tables;
 		this.translation = this.props.store.translation;
 		this.entry = this.props.store.entry;
+		this.filters = this.props.store.filters;
 	},
 	deleteEntry(id) {
 		this.entry.deleteEntry(id)
@@ -20,6 +21,7 @@ export default observer(['store'], React.createClass({
 				if (status === 200) {
 					Notify(this.translation.t('settings.entries.delete_ok'), 'success');
 					this.entry.loadFilteredEntries();
+					this.filters.loadFields();
 				} else {
 					throw new Error('Something wrong happened');
 				}
@@ -49,8 +51,18 @@ export default observer(['store'], React.createClass({
 	},
 	render() {
 		return (
-			<Row className="summary-table-container">
-				<Col xs={1}/>
+			<div className="summary-table">
+				<Row>
+					<Col xs={1}/>
+					<Col xs={10}>
+						<h2 className="title-section">{this.translation.t('charts.titles.entries')}</h2>
+						<hr/>
+					</Col>
+					<Col xs={1}/>
+				</Row>
+
+				<Row className="summary-table-container">
+					<Col xs={1}/>
 					<Col xs={10}>
 						<BootstrapTable
 							data={this.tables.tableSummary}
@@ -191,8 +203,9 @@ export default observer(['store'], React.createClass({
 							/>
 						</BootstrapTable>
 					</Col>
-				<Col xs={1}/>
-			</Row>
+					<Col xs={1}/>
+				</Row>
+			</div>
 		);
 	}
 }));
