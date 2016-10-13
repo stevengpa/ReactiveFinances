@@ -1,8 +1,6 @@
 # ReactiveFinances
-Reactive Finance Tracking
-
+<img src="https://github.com/StevenPerez/images/blob/master/ReactiveFinances.gif?raw=true"/>
 <br /><br />
-
 The MIT License (MIT)
 
 Copyright (c) 2016 Steven Pérez Alfaro
