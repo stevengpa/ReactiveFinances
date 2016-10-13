@@ -7,10 +7,19 @@ const plumber = require('gulp-plumber');
 
 const sass = require('gulp-sass');
 
-const debug = true;
+
 const frontAppFile = './public/src/js/index.jsx';
 const cssSassFile = './public/src/css/locals/index.scss';
-const ENV = 'development';
+
+const isProd = false;
+
+let ENV = 'development';
+let debug = true;
+
+if (isProd) {
+	ENV = 'production';
+	debug = false;
+}
 
 process.env.NODE_ENV = ENV;
 
@@ -22,7 +31,7 @@ function Build(compFileName) {
 	return browserify({
 		entries: compFileName,
 		extensions: ['.js', '.jsx'],
-		debug: true
+		debug: debug
 	})
 		.transform('babelify', {
 			presets: ['es2015', 'stage-3', 'react'],
@@ -57,5 +66,16 @@ gulp.task('watch-sass', function () {
 	gulp.watch('./public/src/css/locals/*.scss', ['sass']);
 });
 
-gulp.task('compile', ['compile-front', 'sass']);
+// PROD TASK
+gulp.task('compile-prod-front', () => {
+	Build(frontAppFile)
+		.on('error', handleError)
+		.pipe(source('bundle.js'))
+		.pipe(buffer())
+		.pipe(uglify())
+		.pipe(gulp.dest('./public/dist/js'))
+		.pipe(plumber());
+});
+
+gulp.task('compile', ['compile-prod-front', 'sass']);
 gulp.task('default', ['watch-front', 'watch-sass']);

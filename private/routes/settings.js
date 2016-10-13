@@ -367,8 +367,14 @@ module.exports = {
 						if (!matchDate) {
 							const year = date[0];
 							const month = date[1];
+
 							matchDate = _.toString(_.get(entry, year.path)) === _.toString(year.value) &&
 								_.toString(_.get(entry, month.path)) === _.toString(month.value);
+
+							if (matchDate) {
+								matchEntry = true;
+							}
+
 						}
 
 					} else {

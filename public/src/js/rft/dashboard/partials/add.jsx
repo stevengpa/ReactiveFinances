@@ -48,7 +48,7 @@ export default observer(['store'], React.createClass({
 	},
 	setEntryDate(entryDate) {
 		if (moment(entryDate, 'YYYY-MM-DD').isValid()) {
-			this.entry.entryDate = new Date(entryDate).toISOString();
+			this.entry.entryDate = entryDate;
 		} else {
 			this.entry.entryDate = new Date().toISOString();
 		}
