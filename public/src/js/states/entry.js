@@ -121,9 +121,6 @@ export default observable({
 		.then(({data}) => this.entries.replace(data));
 	}),
 	clean: action(function clean() {
-		this.category = {};
-		this.label = {};
-		this.entryDate = new Date().toISOString();
 		this.amount = 0;
 		this.description = '';
 	})
