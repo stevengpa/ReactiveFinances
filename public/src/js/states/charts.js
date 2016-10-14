@@ -1,6 +1,5 @@
 import {observable} from 'mobx';
 import _ from 'lodash';
-import numeral from 'numeral';
 
 import storeEntry from '../states/entry';
 
@@ -162,7 +161,7 @@ export default observable({
 
 				if (_.size(totalCategory) > 0) {
 					const totalUSD = _.get(totalCategory, totalField, 0);
-					memo[category].push(numeral(totalUSD).format('0,0.[00]'));
+					memo[category].push(_.round(totalUSD, 2));
 				} else {
 					memo[category].push(0);
 				}
@@ -200,7 +199,7 @@ export default observable({
 
 				if (_.size(totalLabel) > 0) {
 					const totalUSD = _.get(totalLabel, totalField, 0);
-					memo[label].push(numeral(totalUSD).format('0,0.[00]'));
+					memo[label].push(_.round(totalUSD, 2));
 				} else {
 					memo[label].push(0);
 				}
